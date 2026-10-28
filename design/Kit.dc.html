@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Профсила — направления и UI-кит</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=Unbounded:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0;background:#141033}
+.cta{box-shadow:0 6px 0 #8FAE14}
+</style>
+</helmet>
+<div style="width: 1800px; height: 760px; box-sizing: border-box; padding: 56px 64px; display: flex; flex-direction: column; gap: 28px; background: #141033; color: #FFFFFF; font-family: Onest, system-ui, sans-serif">
+  <div style="display: flex; align-items: baseline; gap: 20px">
+    <h1 style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 36px">Направления</h1>
+    <p style="margin: 0; font-size: 16px; color: #B8B1E8">Цвет и иконка закреплены за направлением и повторяются в реакции, диаграмме и каталоге. Текст на цвете — всегда тёмный #141033.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px">
+    <div style="padding: 22px; border-radius: 28px; background: #FF9F40; color: #141033; display: flex; flex-direction: column; gap: 12px; min-height: 186px">
+      <span style="width: 52px; height: 52px; border-radius: 16px; background: #141033; color: #FF9F40; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"></path><path d="M14 7h7v7"></path></svg></span>
+      <p style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 20px">Экономист</p>
+      <p style="margin: 0; font-size: 14px; font-weight: 600">Навык: экономическое мышление</p>
+      <p style="margin: auto 0 0; font-size: 13px; font-weight: 600">#FF9F40 · контраст 8,9 : 1</p>
+    </div>
+    <div style="padding: 22px; border-radius: 28px; background: #3DDC97; color: #141033; display: flex; flex-direction: column; gap: 12px; min-height: 186px">
+      <span style="width: 52px; height: 52px; border-radius: 16px; background: #141033; color: #3DDC97; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path><path d="M10 17V7h3.5a2.5 2.5 0 0 1 0 5H8"></path><path d="M8 14.5h5"></path></svg></span>
+      <p style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 20px">Финансовый аналитик</p>
+      <p style="margin: 0; font-size: 14px; font-weight: 600">Навык: финансовое чутьё</p>
+      <p style="margin: auto 0 0; font-size: 13px; font-weight: 600">#3DDC97 · контраст 10,3 : 1</p>
+    </div>
+    <div style="padding: 22px; border-radius: 28px; background: #FF5FA2; color: #141033; display: flex; flex-direction: column; gap: 12px; min-height: 186px">
+      <span style="width: 52px; height: 52px; border-radius: 16px; background: #141033; color: #FF5FA2; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l18-5v12L3 14v-3z"></path><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg></span>
+      <p style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 20px">Маркетолог</p>
+      <p style="margin: 0; font-size: 14px; font-weight: 600">Навык: креативность</p>
+      <p style="margin: auto 0 0; font-size: 13px; font-weight: 600">#FF5FA2 · контраст 6,4 : 1</p>
+    </div>
+    <div style="padding: 22px; border-radius: 28px; background: #4C7DFF; color: #141033; display: flex; flex-direction: column; gap: 12px; min-height: 186px">
+      <span style="width: 52px; height: 52px; border-radius: 16px; background: #141033; color: #4C7DFF; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"></path><path d="M8.5 12l2.5 2.5 4.5-5"></path></svg></span>
+      <p style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 20px">Экономическая безопасность</p>
+      <p style="margin: 0; font-size: 14px; font-weight: 600">Навык: чутьё на риски</p>
+      <p style="margin: auto 0 0; font-size: 13px; font-weight: 600">#4C7DFF · контраст 4,9 : 1</p>
+    </div>
+    <div style="padding: 22px; border-radius: 28px; background: #C99BFF; color: #141033; display: flex; flex-direction: column; gap: 12px; min-height: 186px">
+      <span style="width: 52px; height: 52px; border-radius: 16px; background: #141033; color: #C99BFF; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-4 4 4 4"></path><path d="M16 8l4 4-4 4"></path><path d="M13.5 6l-3 12"></path></svg></span>
+      <p style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 20px">IT и аналитика данных</p>
+      <p style="margin: 0; font-size: 14px; font-weight: 600">Навык: работа с данными</p>
+      <p style="margin: auto 0 0; font-size: 13px; font-weight: 600">#C99BFF · контраст 8,3 : 1</p>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; flex: 1">
+    <section style="padding: 24px; border-radius: 28px; background: #211A4D; display: flex; flex-direction: column; gap: 12px">
+      <p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #B8B1E8">Типографика</p>
+      <p style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 40px; line-height: 1">ПРОФ<span style="color: #D7FF45">СИЛА</span></p>
+      <p style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 20px">Заголовок экрана</p>
+      <p style="margin: 0; font-size: 18px; font-weight: 700">Текст ситуации — Onest 700, 19/1,4</p>
+      <p style="margin: 0; font-size: 15px; color: #E4E0FF">Основной текст — Onest 500, 15–17 px</p>
+      <p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #B8B1E8">Подпись · Onest 700 · 12 px</p>
+      <p style="margin: auto 0 0; font-size: 13px; color: #B8B1E8">Unbounded и Onest поддерживают кириллицу. Для офлайна шрифты кладутся в сборку файлами woff2.</p>
+    </section>
+
+    <section style="padding: 24px; border-radius: 28px; background: #211A4D; display: flex; flex-direction: column; gap: 14px">
+      <p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #B8B1E8">Кнопки и карточки</p>
+      <div style="display: flex; gap: 12px">
+        <span class="cta" style="flex: 1; height: 56px; border-radius: 18px; background: #D7FF45; color: #141033; display: flex; align-items: center; justify-content: center; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 17px">Играть</span>
+        <span style="flex: 1; height: 56px; box-sizing: border-box; border-radius: 18px; border: 2px solid #4A4190; background: #2D2566; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px">Другой персонаж</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 10px; border-radius: 18px; background: #211A4D; border: 2px solid #3E357D; outline: 1px solid #2D2566">
+        <span style="width: 32px; height: 32px; border-radius: 10px; background: #2D2566; display: flex; align-items: center; justify-content: center; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 14px; color: #D7FF45">A</span>
+        <span style="font-size: 14px">Вариант ответа — обычное состояние</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 10px; border-radius: 18px; background: #2A2260; border: 2px solid #D7FF45">
+        <span style="width: 32px; height: 32px; border-radius: 10px; background: #D7FF45; display: flex; align-items: center; justify-content: center; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 14px; color: #141033">B</span>
+        <span style="font-size: 14px">Наведение / фокус — лаймовая рамка</span>
+      </div>
+      <p style="margin: auto 0 0; font-size: 13px; line-height: 1.45; color: #B8B1E8">Нажатие: сдвиг вниз на 4 px и сжатие до 0,98. Варианты ответа нейтральные — цвет направления появляется только после выбора.</p>
+    </section>
+
+    <section style="padding: 24px; border-radius: 28px; background: #211A4D; display: flex; flex-direction: column; gap: 14px">
+      <p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #B8B1E8">Основа и места под замену</p>
+      <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><span style="height: 44px; border-radius: 12px; background: #141033; border: 2px solid #3E357D"></span><span style="font-size: 11px; color: #E4E0FF">Фон<br>#141033</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><span style="height: 44px; border-radius: 12px; background: #211A4D; border: 2px solid #3E357D"></span><span style="font-size: 11px; color: #E4E0FF">Карточка<br>#211A4D</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><span style="height: 44px; border-radius: 12px; background: #2D2566; border: 2px solid #3E357D"></span><span style="font-size: 11px; color: #E4E0FF">Плашка<br>#2D2566</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><span style="height: 44px; border-radius: 12px; background: #D7FF45"></span><span style="font-size: 11px; color: #E4E0FF">Акцент<br>#D7FF45</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><span style="height: 44px; border-radius: 12px; background: #B8B1E8"></span><span style="font-size: 11px; color: #E4E0FF">Вторичный<br>#B8B1E8</span></div>
+      </div>
+      <div style="position: relative; margin-top: 10px; padding: 14px; border-radius: 12px; outline: 2px dashed rgba(215,255,69,.8); outline-offset: 2px">
+        <span style="position: absolute; top: -12px; right: 8px; padding: 2px 8px; border-radius: 999px; background: #D7FF45; color: #141033; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase">заменить</span>
+        <p style="margin: 0; font-size: 14px; line-height: 1.45">Пунктир и плашка отмечают тексты ситуаций, профессий, контакты, QR и логотип. Скрываются переключателем showSlots в настройках макета.</p>
+      </div>
+      <p style="margin: auto 0 0; font-size: 13px; color: #B8B1E8">Весь текст проходит WCAG AA: белый на фоне — 18 : 1, вторичный — 8,8 : 1.</p>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1800,"height":760}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

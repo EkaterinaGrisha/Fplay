@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Профсила — реакция на выбор</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=Unbounded:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0;background:#141033}
+a{color:#D7FF45}a:hover{color:#EEFFB0}
+.press{transition:transform .14s cubic-bezier(.3,1.5,.6,1),box-shadow .14s ease}
+.press:hover{transform:translateY(-2px)}
+.press:active{transform:translateY(4px) scale(.98)}
+.cta{box-shadow:0 6px 0 #8FAE14}
+.cta:active{box-shadow:0 2px 0 #8FAE14}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rays{animation:spin 16s linear infinite}
+@keyframes pop{0%{transform:scale(0) rotate(-40deg)}60%{transform:scale(1.15) rotate(0deg)}100%{transform:scale(1) rotate(-6deg)}}
+.pop{animation:pop .7s cubic-bezier(.2,1.3,.4,1) both}
+@keyframes rise{0%{opacity:0;transform:translateY(24px) scale(.8)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.rise{animation:rise .5s cubic-bezier(.2,1.4,.4,1) .35s both}
+.rise2{animation:rise .5s ease-out .55s both}
+.rise3{animation:rise .5s ease-out .7s both}
+@keyframes burst{0%{transform:translateY(0) scale(.2);opacity:1}75%{opacity:1}100%{transform:translateY(-140px) scale(1);opacity:0}}
+.piece{animation:burst 1.1s cubic-bezier(.2,.8,.4,1) .15s both}
+@keyframes timer{from{width:0}to{width:100%}}
+.timer{animation:timer 3s linear .8s both}
+@media (prefers-reduced-motion:reduce){.rays,.pop,.rise,.rise2,.rise3,.piece,.timer{animation:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 18px 24px 24px; display: flex; flex-direction: column; gap: 16px; background: #141033; color: #FFFFFF; font-family: Onest, system-ui, sans-serif; overflow: hidden">
+
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <img src="avatars/a01.svg" alt="" style="width: 44px; height: 44px; box-sizing: border-box; border-radius: 50%; border: 3px solid #D7FF45">
+      <div style="flex: 1; min-width: 0">
+        <p style="margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #B8B1E8">Игрок</p>
+        <p style="margin: 0; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Смелый Аналитик</p>
+      </div>
+      <p style="margin: 0; padding: 9px 14px; border-radius: 999px; background: #211A4D; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 14px; white-space: nowrap"><span style="color: #D7FF45">4</span> из 12</p>
+    </div>
+    <div aria-hidden="true" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 4px">
+      <sc-for list="{{segs}}" as="s" hint-placeholder-count="12">
+        <span style="height: 6px; border-radius: 3px; background: {{s.c}}"></span>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px">
+    <div style="position: relative; width: 290px; height: 290px; display: flex; align-items: center; justify-content: center">
+      <svg class="rays" width="290" height="290" viewBox="0 0 290 290" aria-hidden="true" style="position: absolute; inset: 0">
+        <sc-for list="{{rays}}" as="r" hint-placeholder-count="16">
+          <line x1="{{r.x1}}" y1="{{r.y1}}" x2="{{r.x2}}" y2="{{r.y2}}" stroke="{{d.c}}" stroke-width="{{r.w}}" stroke-linecap="round" opacity=".55"></line>
+        </sc-for>
+        <circle cx="145" cy="145" r="104" fill="none" stroke="{{d.c}}" stroke-width="2" stroke-dasharray="4 10" opacity=".6"></circle>
+      </svg>
+      <div aria-hidden="true" style="position: absolute; left: 50%; top: 50%; width: 0; height: 0">
+        <sc-for list="{{pieces}}" as="p" hint-placeholder-count="12">
+          <div style="position: absolute; left: 0; top: 0; transform: rotate({{p.a}}deg)">
+            <span class="piece" style="position: absolute; left: -5px; top: -5px; width: {{p.w}}px; height: {{p.h}}px; border-radius: {{p.r}}; background: {{p.c}}"></span>
+          </div>
+        </sc-for>
+      </div>
+      <div class="pop" style="position: relative; width: 150px; height: 150px; border-radius: 46px; background: {{d.c}}; color: #141033; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 0 rgba(0,0,0,.25)">
+        <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{d.ic.a}}"></path><path d="{{d.ic.b}}"></path><path d="{{d.ic.c}}"></path></svg>
+      </div>
+    </div>
+
+    <p class="rise" style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 84px; line-height: 1; color: {{d.c}}">+2</p>
+    <p class="rise2" aria-live="polite" style="margin: 0; font-size: 22px; line-height: 1.3; font-weight: 700; text-align: center">{{d.line}}</p>
+    <p class="rise3" style="margin: 0; display: flex; align-items: center; gap: 8px; padding: 8px 14px 8px 8px; border-radius: 999px; background: #211A4D; font-size: 13px; font-weight: 600; color: #E4E0FF">
+      <span style="width: 26px; height: 26px; border-radius: 9px; background: {{d.c}}; color: #141033; display: flex; align-items: center; justify-content: center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{d.ic.a}}"></path><path d="{{d.ic.b}}"></path><path d="{{d.ic.c}}"></path></svg>
+      </span>
+      {{d.name}}
+    </p>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <div aria-hidden="true" style="height: 4px; border-radius: 2px; background: #2D2566; overflow: hidden">
+      <div class="timer" style="height: 4px; width: 100%; background: #D7FF45"></div>
+    </div>
+    <a href="Result.dc.html" class="press cta" style="height: 64px; border-radius: 20px; background: #D7FF45; color: #141033; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 20px">
+      Дальше
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+    </a>
+    <p style="margin: 0; font-size: 12px; color: #B8B1E8; text-align: center">Следующая ситуация откроется сама через 3 секунды</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"direction":{"editor":"enum","options":["Экономист","Финансовый аналитик","Маркетолог","Экономическая безопасность","IT и аналитика данных"],"default":"Финансовый аналитик","section":"Вариант"},"$preview":{"width":390,"height":844}}'>
+const DIR = {
+  'Экономист': { c: '#FF9F40', name: 'Экономист', line: 'Экономическое мышление прокачано!', ic: { a: 'M3 17l6-6 4 4 8-8', b: 'M14 7h7v7', c: '' } },
+  'Финансовый аналитик': { c: '#3DDC97', name: 'Финансовый аналитик', line: 'Финансовое чутьё прокачано!', ic: { a: 'M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0', b: 'M10 17V7h3.5a2.5 2.5 0 0 1 0 5H8', c: 'M8 14.5h5' } },
+  'Маркетолог': { c: '#FF5FA2', name: 'Маркетолог', line: 'Креативность прокачана!', ic: { a: 'M3 11l18-5v12L3 14v-3z', b: 'M11.6 16.8a3 3 0 1 1-5.8-1.6', c: '' } },
+  'Экономическая безопасность': { c: '#4C7DFF', name: 'Экономическая безопасность', line: 'Чутьё на риски прокачано!', ic: { a: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z', b: 'M8.5 12l2.5 2.5 4.5-5', c: '' } },
+  'IT и аналитика данных': { c: '#C99BFF', name: 'IT и аналитика данных', line: 'Работа с данными прокачана!', ic: { a: 'M8 8l-4 4 4 4', b: 'M16 8l4 4-4 4', c: 'M13.5 6l-3 12' } }
+};
+
+class Component extends DCLogic {
+  renderVals() {
+    const d = DIR[this.props.direction] || DIR['Финансовый аналитик'];
+    const rays = Array.from({ length: 16 }, (_, k) => {
+      const a = (k / 16) * Math.PI * 2;
+      const r1 = k % 2 ? 116 : 112;
+      const r2 = k % 2 ? 132 : 142;
+      return {
+        x1: 145 + Math.cos(a) * r1,
+        y1: 145 + Math.sin(a) * r1,
+        x2: 145 + Math.cos(a) * r2,
+        y2: 145 + Math.sin(a) * r2,
+        w: k % 2 ? 4 : 7
+      };
+    });
+    const cols = [d.c, '#D7FF45', '#FFFFFF'];
+    const pieces = Array.from({ length: 14 }, (_, k) => ({
+      a: k * (360 / 14) + 6,
+      c: cols[k % 3],
+      w: k % 3 === 0 ? 16 : 10,
+      h: k % 3 === 0 ? 6 : 10,
+      r: k % 2 ? '50%' : '3px'
+    }));
+    const segs = Array.from({ length: 12 }, (_, k) => ({ c: k < 4 ? '#D7FF45' : '#3E357D' }));
+    return { d, rays, pieces, segs };
+  }
+}
+</script>
+</body>
+</html>

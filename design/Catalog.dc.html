@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Профсила — все профессии</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=Unbounded:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0;background:#141033}
+a{color:#D7FF45}a:hover{color:#EEFFB0}
+.press{transition:transform .14s cubic-bezier(.3,1.5,.6,1),box-shadow .14s ease}
+.press:hover{transform:translateY(-2px)}
+.press:active{transform:translateY(4px) scale(.98)}
+.cta{box-shadow:0 6px 0 #8FAE14}
+.cta:active{box-shadow:0 2px 0 #8FAE14}
+.card{transition:transform .2s cubic-bezier(.3,1.5,.6,1)}
+.card:hover{transform:rotate(-1deg) scale(1.01)}
+@media (prefers-reduced-motion:reduce){.card:hover,.press:hover{transform:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 3360px; box-sizing: border-box; padding: 18px 24px 32px; display: flex; flex-direction: column; gap: 18px; background: #141033; color: #FFFFFF; font-family: Onest, system-ui, sans-serif">
+
+  <div style="display: flex; align-items: center; gap: 12px">
+    <a href="Result.dc.html" aria-label="Назад к итогу" class="press" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 14px; background: #211A4D; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+    </a>
+    <p style="margin: 0; font-size: 13px; font-weight: 600; color: #B8B1E8">Назад к итогу</p>
+  </div>
+
+  <div>
+    <h1 style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1">Все профессии</h1>
+    <p style="margin: 8px 0 0; font-size: 15px; line-height: 1.45; color: #E4E0FF">Пять направлений, которым учат на кафедре. Выбирай любое — суперсилы можно совмещать.</p>
+  </div>
+
+  <nav aria-label="Направления" style="display: flex; flex-wrap: wrap; gap: 8px">
+    <a href="#econ" class="press" style="display: flex; align-items: center; gap: 8px; min-height: 40px; box-sizing: border-box; padding: 6px 12px 6px 6px; border-radius: 999px; background: #211A4D; color: #FFFFFF; text-decoration: none; font-size: 13px; font-weight: 600">
+      <span style="width: 28px; height: 28px; border-radius: 50%; background: #FF9F40; color: #141033; display: flex; align-items: center; justify-content: center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"></path><path d="M14 7h7v7"></path></svg></span>Экономист</a>
+    <a href="#fin" class="press" style="display: flex; align-items: center; gap: 8px; min-height: 40px; box-sizing: border-box; padding: 6px 12px 6px 6px; border-radius: 999px; background: #211A4D; color: #FFFFFF; text-decoration: none; font-size: 13px; font-weight: 600">
+      <span style="width: 28px; height: 28px; border-radius: 50%; background: #3DDC97; color: #141033; display: flex; align-items: center; justify-content: center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path><path d="M10 17V7h3.5a2.5 2.5 0 0 1 0 5H8"></path><path d="M8 14.5h5"></path></svg></span>Финансы</a>
+    <a href="#mkt" class="press" style="display: flex; align-items: center; gap: 8px; min-height: 40px; box-sizing: border-box; padding: 6px 12px 6px 6px; border-radius: 999px; background: #211A4D; color: #FFFFFF; text-decoration: none; font-size: 13px; font-weight: 600">
+      <span style="width: 28px; height: 28px; border-radius: 50%; background: #FF5FA2; color: #141033; display: flex; align-items: center; justify-content: center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l18-5v12L3 14v-3z"></path><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg></span>Маркетинг</a>
+    <a href="#sec" class="press" style="display: flex; align-items: center; gap: 8px; min-height: 40px; box-sizing: border-box; padding: 6px 12px 6px 6px; border-radius: 999px; background: #211A4D; color: #FFFFFF; text-decoration: none; font-size: 13px; font-weight: 600">
+      <span style="width: 28px; height: 28px; border-radius: 50%; background: #4C7DFF; color: #141033; display: flex; align-items: center; justify-content: center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"></path><path d="M8.5 12l2.5 2.5 4.5-5"></path></svg></span>Безопасность</a>
+    <a href="#it" class="press" style="display: flex; align-items: center; gap: 8px; min-height: 40px; box-sizing: border-box; padding: 6px 12px 6px 6px; border-radius: 999px; background: #211A4D; color: #FFFFFF; text-decoration: none; font-size: 13px; font-weight: 600">
+      <span style="width: 28px; height: 28px; border-radius: 50%; background: #C99BFF; color: #141033; display: flex; align-items: center; justify-content: center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-4 4 4 4"></path><path d="M16 8l4 4-4 4"></path><path d="M13.5 6l-3 12"></path></svg></span>IT и данные</a>
+  </nav>
+
+  <article id="econ" class="card" style="position: relative; padding: 22px; border-radius: 28px; background: #FF9F40; color: #141033; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <span style="width: 52px; height: 52px; border-radius: 16px; background: #141033; color: #FF9F40; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"></path><path d="M14 7h7v7"></path></svg></span>
+      <span style="font-family: Unbounded, sans-serif; font-weight: 700; font-size: 13px">01 / 05</span>
+    </div>
+    <h2 style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.18">Экономист</h2>
+    <div style="position: relative; display: flex; flex-direction: column; gap: 12px; border-radius: 12px; outline: {{slotDark}}; outline-offset: 4px">
+      <p style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 500">Разбирается, как устроены рынки, цены и решения людей, и помогает выбрать стратегию для компании или города.</p>
+      <p style="margin: 0; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase">Примеры задач</p>
+      <ul style="margin: 0; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.4">
+        <li>Оценить, как рост цен ударит по бизнесу</li>
+        <li>Сделать прогноз спроса на следующий год</li>
+        <li>Посчитать выгоду проекта для города</li>
+      </ul>
+      <p style="margin: 2px 0 0; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase">Где работают</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Банки</span>
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Компании</span>
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Госсектор</span>
+      </div>
+      <sc-if value="{{showSlots}}" hint-placeholder-val="{{ true }}"><span style="position: absolute; top: -14px; right: -4px; padding: 2px 8px; border-radius: 999px; background: #141033; color: #D7FF45; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase">заменить</span></sc-if>
+    </div>
+    <div style="position: relative; padding: 16px; border-radius: 20px; background: #141033; color: #FFFFFF; outline: {{slotDark}}; outline-offset: 4px">
+      <p style="margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #B8B1E8">Зарплата в регионе</p>
+      <p style="margin: 6px 0 0; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 18px">от [00 000] до [000 000] ₽</p>
+      <p style="margin: 6px 0 0; font-size: 12px; color: #B8B1E8">[Источник данных, год]</p>
+    </div>
+  </article>
+
+  <article id="fin" class="card" style="position: relative; padding: 22px; border-radius: 28px; background: #3DDC97; color: #141033; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <span style="width: 52px; height: 52px; border-radius: 16px; background: #141033; color: #3DDC97; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path><path d="M10 17V7h3.5a2.5 2.5 0 0 1 0 5H8"></path><path d="M8 14.5h5"></path></svg></span>
+      <span style="font-family: Unbounded, sans-serif; font-weight: 700; font-size: 13px">02 / 05</span>
+    </div>
+    <h2 style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.18">Финансовый аналитик</h2>
+    <div style="position: relative; display: flex; flex-direction: column; gap: 12px; border-radius: 12px; outline: {{slotDark}}; outline-offset: 4px">
+      <p style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 500">Следит, где деньги работают, а где утекают, и подсказывает, куда их вложить с умом.</p>
+      <p style="margin: 0; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase">Примеры задач</p>
+      <ul style="margin: 0; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.4">
+        <li>Посчитать, окупится ли новый проект</li>
+        <li>Построить финансовую модель и прогноз</li>
+        <li>Разобрать отчётность и инвестиции</li>
+      </ul>
+      <p style="margin: 2px 0 0; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase">Где работают</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Банки</span>
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Инвестфонды</span>
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Корпорации</span>
+      </div>
+      <sc-if value="{{showSlots}}" hint-placeholder-val="{{ true }}"><span style="position: absolute; top: -14px; right: -4px; padding: 2px 8px; border-radius: 999px; background: #141033; color: #D7FF45; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase">заменить</span></sc-if>
+    </div>
+    <div style="position: relative; padding: 16px; border-radius: 20px; background: #141033; color: #FFFFFF; outline: {{slotDark}}; outline-offset: 4px">
+      <p style="margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #B8B1E8">Зарплата в регионе</p>
+      <p style="margin: 6px 0 0; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 18px">от [00 000] до [000 000] ₽</p>
+      <p style="margin: 6px 0 0; font-size: 12px; color: #B8B1E8">[Источник данных, год]</p>
+    </div>
+  </article>
+
+  <article id="mkt" class="card" style="position: relative; padding: 22px; border-radius: 28px; background: #FF5FA2; color: #141033; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <span style="width: 52px; height: 52px; border-radius: 16px; background: #141033; color: #FF5FA2; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l18-5v12L3 14v-3z"></path><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg></span>
+      <span style="font-family: Unbounded, sans-serif; font-weight: 700; font-size: 13px">03 / 05</span>
+    </div>
+    <h2 style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.18">Маркетолог</h2>
+    <div style="position: relative; display: flex; flex-direction: column; gap: 12px; border-radius: 12px; outline: {{slotDark}}; outline-offset: 4px">
+      <p style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 500">Понимает, чего хотят люди, и придумывает, как рассказать им о продукте так, чтобы запомнилось.</p>
+      <p style="margin: 0; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase">Примеры задач</p>
+      <ul style="margin: 0; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.4">
+        <li>Изучить аудиторию и конкурентов</li>
+        <li>Запустить рекламу и соцсети бренда</li>
+        <li>Посчитать, какая реклама реально работает</li>
+      </ul>
+      <p style="margin: 2px 0 0; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase">Где работают</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Агентства</span>
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Бренды</span>
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Стартапы</span>
+      </div>
+      <sc-if value="{{showSlots}}" hint-placeholder-val="{{ true }}"><span style="position: absolute; top: -14px; right: -4px; padding: 2px 8px; border-radius: 999px; background: #141033; color: #D7FF45; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase">заменить</span></sc-if>
+    </div>
+    <div style="position: relative; padding: 16px; border-radius: 20px; background: #141033; color: #FFFFFF; outline: {{slotDark}}; outline-offset: 4px">
+      <p style="margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #B8B1E8">Зарплата в регионе</p>
+      <p style="margin: 6px 0 0; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 18px">от [00 000] до [000 000] ₽</p>
+      <p style="margin: 6px 0 0; font-size: 12px; color: #B8B1E8">[Источник данных, год]</p>
+    </div>
+  </article>
+
+  <article id="sec" class="card" style="position: relative; padding: 22px; border-radius: 28px; background: #4C7DFF; color: #141033; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <span style="width: 52px; height: 52px; border-radius: 16px; background: #141033; color: #4C7DFF; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"></path><path d="M8.5 12l2.5 2.5 4.5-5"></path></svg></span>
+      <span style="font-family: Unbounded, sans-serif; font-weight: 700; font-size: 13px">04 / 05</span>
+    </div>
+    <h2 style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.18">Специалист по экономической безопасности</h2>
+    <div style="position: relative; display: flex; flex-direction: column; gap: 12px; border-radius: 12px; outline: {{slotDark}}; outline-offset: 4px">
+      <p style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 500">Защищает бизнес и государство от мошенников, финансовых рисков и нечестных партнёров.</p>
+      <p style="margin: 0; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase">Примеры задач</p>
+      <ul style="margin: 0; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.4">
+        <li>Проверить партнёра перед крупной сделкой</li>
+        <li>Распутать схему мошенничества</li>
+        <li>Построить систему защиты от рисков</li>
+      </ul>
+      <p style="margin: 2px 0 0; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase">Где работают</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Банки</span>
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Госслужба</span>
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Крупный бизнес</span>
+      </div>
+      <sc-if value="{{showSlots}}" hint-placeholder-val="{{ true }}"><span style="position: absolute; top: -14px; right: -4px; padding: 2px 8px; border-radius: 999px; background: #141033; color: #D7FF45; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase">заменить</span></sc-if>
+    </div>
+    <div style="position: relative; padding: 16px; border-radius: 20px; background: #141033; color: #FFFFFF; outline: {{slotDark}}; outline-offset: 4px">
+      <p style="margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #B8B1E8">Зарплата в регионе</p>
+      <p style="margin: 6px 0 0; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 18px">от [00 000] до [000 000] ₽</p>
+      <p style="margin: 6px 0 0; font-size: 12px; color: #B8B1E8">[Источник данных, год]</p>
+    </div>
+  </article>
+
+  <article id="it" class="card" style="position: relative; padding: 22px; border-radius: 28px; background: #C99BFF; color: #141033; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <span style="width: 52px; height: 52px; border-radius: 16px; background: #141033; color: #C99BFF; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-4 4 4 4"></path><path d="M16 8l4 4-4 4"></path><path d="M13.5 6l-3 12"></path></svg></span>
+      <span style="font-family: Unbounded, sans-serif; font-weight: 700; font-size: 13px">05 / 05</span>
+    </div>
+    <h2 style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.18">IT и аналитика данных</h2>
+    <div style="position: relative; display: flex; flex-direction: column; gap: 12px; border-radius: 12px; outline: {{slotDark}}; outline-offset: 4px">
+      <p style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 500">Превращает огромные таблицы в понятные ответы и учит компьютер принимать решения быстрее людей.</p>
+      <p style="margin: 0; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase">Примеры задач</p>
+      <ul style="margin: 0; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.4">
+        <li>Собрать дашборд для руководителя</li>
+        <li>Найти закономерности в данных о продажах</li>
+        <li>Написать скрипт на Python или SQL</li>
+      </ul>
+      <p style="margin: 2px 0 0; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase">Где работают</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">IT-компании</span>
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Финтех</span>
+        <span style="padding: 5px 12px; border-radius: 999px; border: 2px solid #141033; font-size: 13px; font-weight: 600">Ритейл</span>
+      </div>
+      <sc-if value="{{showSlots}}" hint-placeholder-val="{{ true }}"><span style="position: absolute; top: -14px; right: -4px; padding: 2px 8px; border-radius: 999px; background: #141033; color: #D7FF45; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase">заменить</span></sc-if>
+    </div>
+    <div style="position: relative; padding: 16px; border-radius: 20px; background: #141033; color: #FFFFFF; outline: {{slotDark}}; outline-offset: 4px">
+      <p style="margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #B8B1E8">Зарплата в регионе</p>
+      <p style="margin: 6px 0 0; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 18px">от [00 000] до [000 000] ₽</p>
+      <p style="margin: 6px 0 0; font-size: 12px; color: #B8B1E8">[Источник данных, год]</p>
+    </div>
+  </article>
+
+  <section style="position: relative; padding: 22px; border-radius: 28px; background: #211A4D; display: flex; flex-direction: column; gap: 10px; outline: {{slot}}; outline-offset: 4px">
+    <p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #D7FF45">Учись этому у нас</p>
+    <p style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 18px; line-height: 1.3">[Название образовательной программы]</p>
+    <p style="margin: 0; font-size: 14px; line-height: 1.45; color: #E4E0FF">Кафедра экономики и экономической безопасности · [сайт кафедры] · [+7 (000) 000-00-00]</p>
+    <sc-if value="{{showSlots}}" hint-placeholder-val="{{ true }}"><span style="position: absolute; top: -10px; right: 14px; padding: 2px 8px; border-radius: 999px; background: #D7FF45; color: #141033; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase">заменить</span></sc-if>
+  </section>
+
+  <a href="Main.dc.html" class="press cta" style="height: 64px; border-radius: 20px; background: #D7FF45; color: #141033; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 19px">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"></path><path d="M20 4v7h-7"></path></svg>
+    Сыграть ещё
+  </a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"showSlots":{"editor":"boolean","default":true,"section":"Макет"},"$preview":{"width":390,"height":3360}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const show = this.props.showSlots ?? true;
+    return {
+      showSlots: show,
+      slot: show ? '2px dashed rgba(215,255,69,.8)' : '2px dashed transparent',
+      slotDark: show ? '2px dashed rgba(20,16,51,.75)' : '2px dashed transparent'
+    };
+  }
+}
+</script>
+</body>
+</html>

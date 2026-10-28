@@ -1,0 +1,37 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-10-28T10:00:00Z"},
+  "title": "Профориентация: игра",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {"x": 0, "y": 0, "w": 390, "h": 844, "title": "1 · Старт", "is_interactive": true, "radius": 40},
+    "Character.dc.html": {"x": 470, "y": 0, "w": 390, "h": 844, "title": "2 · Выбор персонажа", "is_interactive": true, "radius": 40},
+    "Situation.dc.html": {"x": 940, "y": 0, "w": 390, "h": 844, "title": "3 · Ситуация", "is_interactive": true, "radius": 40},
+    "Reaction.dc.html": {"x": 1410, "y": 0, "w": 390, "h": 844, "title": "4 · Реакция на выбор", "is_interactive": true, "radius": 40},
+    "Result.dc.html": {"x": 1880, "y": 0, "w": 390, "h": 1960, "title": "5 · Итог", "is_interactive": true, "radius": 40},
+    "Catalog.dc.html": {"x": 2350, "y": 0, "w": 390, "h": 3360, "title": "6 · Все профессии", "is_interactive": true, "radius": 40},
+    "Avatars.dc.html": {"x": 0, "y": 1224, "w": 1800, "h": 940, "title": "Аватары · 24 персонажа"},
+    "Kit.dc.html": {"x": 0, "y": 2284, "w": 1800, "h": 760, "title": "Направления и UI-кит"},
+    "Projector.dc.html": {"x": 0, "y": 3740, "w": 1920, "h": 1080, "title": "7 · Проектор: ситуация", "is_interactive": true},
+    "ProjectorResult.dc.html": {"x": 2000, "y": 3740, "w": 1920, "h": 1080, "title": "7 · Проектор: итог класса", "is_interactive": true}
+  },
+  "order": [
+    "Main.dc.html",
+    "Character.dc.html",
+    "Situation.dc.html",
+    "Reaction.dc.html",
+    "Result.dc.html",
+    "Catalog.dc.html",
+    "Avatars.dc.html",
+    "Kit.dc.html",
+    "Projector.dc.html",
+    "ProjectorResult.dc.html"
+  ],
+  "notes": {
+    "t1": {"x": 0, "y": -300, "text": "Мобильная версия · путь игрока", "kind": "title1", "maxW": 2740},
+    "t2": {"x": 0, "y": 964, "text": "Персонажи и визуальный язык", "kind": "title1", "maxW": 1800},
+    "t3": {"x": 0, "y": 3480, "text": "Режим для проектора · 1920×1080", "kind": "title1", "maxW": 3920}
+  },
+  "designSystems": []
+}

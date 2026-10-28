@@ -10,13 +10,13 @@
 <helmet>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=Unbounded:wght@600;700;800&amp;display=swap">
 <style>
-body{margin:0;background:#141033}
-a{color:#D7FF45}a:hover{color:#EEFFB0}
+body{margin:0;background:#F4F1FF}
+a{color:#5B2FD6}a:hover{color:#3F1DA8}
 .press{transition:transform .14s cubic-bezier(.3,1.5,.6,1),box-shadow .14s ease}
 .press:hover{transform:translateY(-2px)}
 .press:active{transform:translateY(4px) scale(.98)}
-.cta{box-shadow:0 6px 0 #8FAE14}
-.cta:active{box-shadow:0 2px 0 #8FAE14}
+.cta{box-shadow:0 6px 0 #141033}
+.cta:active{box-shadow:0 2px 0 #141033}
 @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .bar{transform-origin:left center;animation:grow .9s cubic-bezier(.2,.9,.3,1) both}
 @keyframes drop{0%{opacity:0;transform:translateY(-30px) scale(.7)}70%{transform:translateY(4px) scale(1.04)}100%{opacity:1;transform:none}}
@@ -24,14 +24,14 @@ a{color:#D7FF45}a:hover{color:#EEFFB0}
 @media (prefers-reduced-motion:reduce){.bar,.drop{animation:none}}
 </style>
 </helmet>
-<div style="width: 390px; height: 1960px; box-sizing: border-box; padding: 18px 24px 28px; display: flex; flex-direction: column; gap: 20px; background: #141033; color: #FFFFFF; font-family: Onest, system-ui, sans-serif">
+<div style="width: 390px; height: 2100px; box-sizing: border-box; padding: 18px 24px 28px; display: flex; flex-direction: column; gap: 20px; background: #F4F1FF; color: #141033; font-family: Onest, system-ui, sans-serif">
 
   <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
-    <a href="Main.dc.html" aria-label="На старт" class="press" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 14px; background: #211A4D; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+    <a href="Main.dc.html" aria-label="На старт" class="press" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 14px; background: #FFFFFF; box-shadow: inset 0 0 0 2px #E4DFFA; color: #141033; display: flex; align-items: center; justify-content: center">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"></path></svg>
     </a>
     <h1 style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 18px">Итог игры</h1>
-    <p style="margin: 0; padding: 9px 12px; border-radius: 999px; background: #211A4D; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 13px; white-space: nowrap"><span style="color: #D7FF45">12</span> из 12</p>
+    <p style="margin: 0; padding: 9px 12px; border-radius: 999px; background: #FFFFFF; box-shadow: inset 0 0 0 2px #E4DFFA; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 13px; white-space: nowrap"><span style="color: #5B2FD6">12</span> из 12</p>
   </div>
 
   <div style="position: relative; margin-top: 56px; padding: 72px 22px 24px; border-radius: 32px; background: #3DDC97; color: #141033; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px">
@@ -41,7 +41,7 @@ a{color:#D7FF45}a:hover{color:#EEFFB0}
       <path d="M50 52 Q51.8 64.2 64 66 Q51.8 67.8 50 80 Q48.2 67.8 36 66 Q48.2 64.2 50 52 Z" fill="#141033" fill-opacity=".85"></path>
       <path d="M292 150 Q293 157 300 158 Q293 159 292 166 Q291 159 284 158 Q291 157 292 150 Z" fill="#FFFFFF"></path>
     </svg>
-    <img class="drop" src="avatars/a01.svg" alt="Твой персонаж" style="position: absolute; left: 50%; top: -56px; margin-left: -60px; width: 120px; height: 120px; box-sizing: border-box; border-radius: 50%; border: 6px solid #141033">
+    <img class="drop" src="avatars/a01.svg" alt="Твой персонаж" style="position: absolute; left: 50%; top: -56px; margin-left: -60px; width: 120px; height: 120px; box-sizing: border-box; border-radius: 50%; border: 6px solid #FFFFFF">
     <p style="position: relative; margin: 0; padding: 5px 12px; border-radius: 999px; background: #141033; color: #FFFFFF; font-size: 13px; font-weight: 700">Смелый Аналитик</p>
     <p style="position: relative; margin: 6px 0 0; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase">Твоя профессия-суперсила</p>
     <h2 style="position: relative; margin: 0; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 31px; line-height: 1.1">Финансовый аналитик</h2>
@@ -55,10 +55,10 @@ a{color:#D7FF45}a:hover{color:#EEFFB0}
     </p>
   </div>
 
-  <section style="padding: 22px; border-radius: 28px; background: #211A4D; display: flex; flex-direction: column; gap: 16px" aria-labelledby="chart-title">
+  <section style="padding: 22px; border-radius: 28px; background: #FFFFFF; box-shadow: inset 0 0 0 2px #E4DFFA; display: flex; flex-direction: column; gap: 16px" aria-labelledby="chart-title">
     <div>
       <h3 id="chart-title" style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 18px">Твой профиль</h3>
-      <p style="margin: 4px 0 0; font-size: 13px; color: #B8B1E8">Доля баллов за 12 ситуаций по пяти направлениям</p>
+      <p style="margin: 4px 0 0; font-size: 13px; color: #4E4878">Доля баллов за 12 ситуаций по пяти направлениям</p>
     </div>
     <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px">
       <sc-for list="{{rows}}" as="r" hint-placeholder-count="5">
@@ -67,10 +67,10 @@ a{color:#D7FF45}a:hover{color:#EEFFB0}
             <span style="width: 28px; height: 28px; flex-shrink: 0; border-radius: 9px; background: {{r.c}}; color: #141033; display: flex; align-items: center; justify-content: center">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{r.ic.a}}"></path><path d="{{r.ic.b}}"></path><path d="{{r.ic.c}}"></path></svg>
             </span>
-            <span style="flex: 1; min-width: 0; font-size: 14px; font-weight: 600; color: #FFFFFF">{{r.name}}</span>
-            <span style="font-family: Unbounded, sans-serif; font-weight: 700; font-size: 14px; color: #FFFFFF">{{r.v}}%</span>
+            <span style="flex: 1; min-width: 0; font-size: 14px; font-weight: 600; color: #141033">{{r.name}}</span>
+            <span style="font-family: Unbounded, sans-serif; font-weight: 700; font-size: 14px; color: #141033">{{r.v}}%</span>
           </div>
-          <div aria-hidden="true" style="height: 10px; border-radius: 5px; background: #2D2566">
+          <div aria-hidden="true" style="height: 10px; border-radius: 5px; background: #ECE8FF">
             <div class="bar" style="height: 10px; width: {{r.w}}%; border-radius: 5px; background: {{r.c}}; animation-delay: {{r.d}}s"></div>
           </div>
         </li>
@@ -78,7 +78,7 @@ a{color:#D7FF45}a:hover{color:#EEFFB0}
     </ul>
   </section>
 
-  <section style="position: relative; padding: 22px; border-radius: 28px; background: #211A4D; display: flex; flex-direction: column; gap: 14px; outline: {{slot}}; outline-offset: 4px">
+  <section style="position: relative; padding: 22px; border-radius: 28px; background: #FFFFFF; box-shadow: inset 0 0 0 2px #E4DFFA; display: flex; flex-direction: column; gap: 14px; outline: {{slot}}; outline-offset: 4px">
     <h3 style="margin: 0; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 18px; line-height: 1.3">Чем занимаются финансовые аналитики</h3>
     <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px">
       <li style="display: flex; gap: 12px; align-items: flex-start">
@@ -94,10 +94,10 @@ a{color:#D7FF45}a:hover{color:#EEFFB0}
         <span style="padding-top: 5px; font-size: 15px; line-height: 1.4">Строят финансовые модели и прогнозы на год вперёд</span>
       </li>
     </ol>
-    <sc-if value="{{showSlots}}" hint-placeholder-val="{{ true }}"><span style="position: absolute; top: -10px; right: 14px; padding: 2px 8px; border-radius: 999px; background: #D7FF45; color: #141033; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase">заменить</span></sc-if>
+    <sc-if value="{{showSlots}}" hint-placeholder-val="{{ true }}"><span style="position: absolute; top: -10px; right: 14px; padding: 2px 8px; border-radius: 999px; background: #5B2FD6; color: #FFFFFF; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase">заменить</span></sc-if>
   </section>
 
-  <section style="position: relative; padding: 24px 22px; border-radius: 28px; background: #FFFFFF; color: #141033; display: flex; flex-direction: column; gap: 16px">
+  <section style="position: relative; padding: 24px 22px; border-radius: 28px; background: #FFFFFF; box-shadow: inset 0 0 0 3px #141033; color: #141033; display: flex; flex-direction: column; gap: 16px">
     <div style="display: flex; align-items: center; gap: 10px">
       <span style="width: 36px; height: 36px; border-radius: 12px; background: #D7FF45; display: flex; align-items: center; justify-content: center">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#141033" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"></path><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"></path></svg>
@@ -145,20 +145,20 @@ a{color:#D7FF45}a:hover{color:#EEFFB0}
   </section>
 
   <div style="display: flex; flex-direction: column; gap: 12px">
-    <a href="Main.dc.html" class="press cta" style="height: 64px; border-radius: 20px; background: #D7FF45; color: #141033; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 19px">
+    <a href="Main.dc.html" class="press cta" style="height: 64px; border-radius: 20px; box-sizing: border-box; border: 2px solid #141033; background: #D7FF45; color: #141033; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 19px">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"></path><path d="M20 4v7h-7"></path></svg>
       Сыграть ещё
     </a>
-    <a href="Catalog.dc.html" class="press" style="height: 56px; box-sizing: border-box; border-radius: 18px; border: 2px solid #4A4190; background: #2D2566; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 600; font-size: 16px">
+    <a href="Catalog.dc.html" class="press" style="height: 56px; box-sizing: border-box; border-radius: 18px; border: 2px solid #141033; background: #FFFFFF; color: #141033; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 600; font-size: 16px">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"></rect><rect x="14" y="3" width="7" height="7" rx="2"></rect><rect x="3" y="14" width="7" height="7" rx="2"></rect><rect x="14" y="14" width="7" height="7" rx="2"></rect></svg>
       Все профессии
     </a>
   </div>
 
-  <p style="margin: 0; font-size: 13px; line-height: 1.45; color: #B8B1E8; text-align: center">Это подсказка, а не приговор. Сыграй ещё раз, выбери по-другому — и сравни суперсилы с друзьями.</p>
+  <p style="margin: 0; font-size: 13px; line-height: 1.45; color: #4E4878; text-align: center">Это подсказка, а не приговор. Сыграй ещё раз, выбери по-другому — и сравни суперсилы с друзьями.</p>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"showSlots":{"editor":"boolean","default":true,"section":"Макет"},"$preview":{"width":390,"height":1960}}'>
+<script type="text/x-dc" data-dc-script data-props='{"showSlots":{"editor":"boolean","default":true,"section":"Макет"},"$preview":{"width":390,"height":2100}}'>
 const DIRS = [
   { name: 'Финансовый аналитик', c: '#3DDC97', v: 34, ic: { a: 'M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0', b: 'M10 17V7h3.5a2.5 2.5 0 0 1 0 5H8', c: 'M8 14.5h5' } },
   { name: 'Экономист', c: '#FF9F40', v: 24, ic: { a: 'M3 17l6-6 4 4 8-8', b: 'M14 7h7v7', c: '' } },
@@ -175,7 +175,7 @@ class Component extends DCLogic {
     return {
       rows,
       showSlots: show,
-      slot: show ? '2px dashed rgba(215,255,69,.8)' : '2px dashed transparent',
+      slot: show ? '2px dashed #7A55E8' : '2px dashed transparent',
       slotDark: show ? '2px dashed rgba(20,16,51,.7)' : '2px dashed transparent',
       slotLight: show ? '2px dashed #7A55E8' : '2px dashed transparent'
     };

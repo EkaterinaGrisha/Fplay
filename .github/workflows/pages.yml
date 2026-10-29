@@ -1,4 +1,4 @@
-# Публикация игры на GitHub Pages: https://ekaterinagrisha.github.io/Fplay/
+# Публикация игры на GitHub Pages: https://profsila.github.io/ (репозиторий profsila/profsila.github.io)
 # Перед публикацией проверяется банк заданий (node tools/bank.js check) и собирается
 # архив для ведущих profsila.zip. На сайт выкладывается только папка game/.
 

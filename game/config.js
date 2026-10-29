@@ -5,5 +5,5 @@ window.PROFSILA = window.PROFSILA || {};
 PROFSILA.config = {
   // Куда ведёт QR-код для телефонов: адрес игры на GitHub Pages.
   // Если адрес поменяется, поправьте его здесь — QR на проекторе и на листовке перерисуется сам.
-  playUrl: "https://ekaterinagrisha.github.io/Fplay/"
+  playUrl: "https://profsila.github.io/"
 };

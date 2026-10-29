@@ -22,7 +22,8 @@
   P.quick.items.forEach(function (q) { QUICK[q.id] = q; });
   P.cases.forEach(function (c) { CASE[c.id] = c; });
   P.quiz.forEach(function (q) { QUIZ[q.id] = q; });
-  P.modes.forEach(function (m) { MODE[m.id] = m; });
+  // Личный режим играет телефонные настройки длительности (поле phone в modes.js).
+  P.modes.forEach(function (m) { MODE[m.id] = E.modeFor(P, m.id, "phone"); });
 
   // ---------- персонажи (как в макете design/Character.dc.html) ----------
 
@@ -50,6 +51,9 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c];
     });
   }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  // ["Физика", "Химия", "Информатика"] → «Физика, Химия или Информатика».
+  function orList(a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " или " + a[a.length - 1]; }
   function rnd(n) { return Math.floor(Math.random() * n); }
   function pad2(n) { return (n < 10 ? "0" : "") + n; }
   function fx(n) { return Math.round(n * 10) / 10; }
@@ -128,17 +132,19 @@
     saved: null
   };
   var autoTimer = null;
+  var AUTO_S = (P.personal && P.personal.autoNextSeconds) || 6;
   var spinTimer = null;
 
   // Аватары грузятся заранее, чтобы слот-машина не мигала пустым окном.
   for (var a = 0; a < 24; a++) new Image().src = avatarSrc(a);
 
+  // Партию, сохранённую прошлой версией банка, не продолжаем: в ней могут быть старые направления.
   var savedRun = load(SS, "profsila.run", null);
-  if (savedRun && savedRun.run && savedRun.run.items) S.saved = savedRun;
+  if (savedRun && savedRun.v === P.meta.bankVersion && savedRun.run && savedRun.run.items) S.saved = savedRun;
 
   function persist() {
     if (!S.run) return;
-    save(SS, "profsila.run", { modeId: S.modeId, av: S.av, adj: S.adj, noun: S.noun, run: S.run });
+    save(SS, "profsila.run", { v: P.meta.bankVersion, modeId: S.modeId, av: S.av, adj: S.adj, noun: S.noun, run: S.run });
   }
 
   // ---------- навигация ----------
@@ -170,7 +176,7 @@
   function seenList() { return load(LS, "profsila.seen", []); }
 
   function startRun() {
-    var game = E.drawGame(P, S.modeId, { seed: rnd(2147483647), seen: seenList() });
+    var game = E.drawGame(P, S.modeId, { seed: rnd(2147483647), seen: seenList(), device: "phone" });
     S.run = {
       items: game.screens.map(function (s) { return { type: s.type, id: s.item.id, block: s.block || null }; }),
       i: 0,
@@ -512,9 +518,9 @@
       (showHint ? "<div class=\"card tight hint rise3\">" + dirDot(d, 32) + "<p>" + esc(hintText) + "</p></div>" : "") +
       others + ask +
       "<div class=\"stack push\" style=\"gap:10px\">" +
-      (auto ? "<div class=\"timer" + (reduced ? "" : " run") + "\" aria-hidden=\"true\"><div></div></div>" : "") +
+      (auto ? "<div class=\"timer" + (reduced ? "" : " run") + "\" aria-hidden=\"true\"><div style=\"animation-duration:" + (AUTO_S - 0.4) + "s\"></div></div>" : "") +
       "<button class=\"btn btn-cta press\" data-act=\"next\">" + nextLabel() + ICON.arrow + "</button>" +
-      (auto ? "<p class=\"note center\" style=\"font-size:12px\">Следующий вопрос откроется сам через 3 секунды</p>" : "") +
+      (auto ? "<p class=\"note center\" style=\"font-size:12px\">Следующий вопрос откроется сам через " + AUTO_S + " " + plural(AUTO_S, "секунду", "секунды", "секунд") + "</p>" : "") +
       "</div></div>";
   }
 
@@ -601,13 +607,13 @@
     var rows = P.directions.slice().sort(function (a, b) { return sc.percent[b.id] - sc.percent[a.id]; });
     var max = Math.max.apply(null, rows.map(function (d) { return sc.percent[d.id]; })) || 1;
     out.profile = "<section class=\"card stack\" style=\"gap:16px\" aria-labelledby=\"chart-title\"><div><p class=\"sec-title\" id=\"chart-title\">Твой профиль</p>" +
-      "<p class=\"sec-sub\">Доля баллов за " + answered + " " + plural(answered, "выбор", "выбора", "выборов") + " по семи направлениям</p></div><ul class=\"bars\">" +
+      "<p class=\"sec-sub\">Доля баллов за " + answered + " " + plural(answered, "выбор", "выбора", "выборов") + " по " + dirCount(true) + " направлениям</p></div><ul class=\"bars\">" +
       rows.map(function (d, k) {
         return "<li><div class=\"row\" style=\"gap:10px\">" + dirDot(d, 28) + "<span class=\"lbl\">" + esc(d.name) + "</span><span class=\"val\">" + sc.percent[d.id] + "%</span></div>" +
           "<div class=\"track\" aria-hidden=\"true\"><div class=\"fill bar\" style=\"width:" + Math.round(sc.percent[d.id] / max * 100) + "%;background:" + d.color + ";animation-delay:" + fx(0.15 + k * 0.08) + "s\"></div></div></li>";
       }).join("") + "</ul></section>";
 
-    var badges = E.earnedBadges(P, res.modeId, { picks: res.picks, sc: sc, quizCorrect: res.quizCorrect, quizTotal: res.quizTotal });
+    var badges = E.earnedBadges(P, res.modeId, { picks: res.picks, sc: sc, quizCorrect: res.quizCorrect, quizTotal: res.quizTotal, device: "phone" });
     if (badges.length) {
       out.badges = "<section class=\"card stack\"><p class=\"sec-title\">Достижения</p><ul class=\"badges\">" + badges.map(function (b) {
         return "<li><span class=\"medal\">" + ICON.medal + "</span><div><b>" + esc(b.title) + "</b><span>" + esc(b.text) + "</span></div></li>";
@@ -627,9 +633,9 @@
 
     out.ege = "<section class=\"card stack\"><div class=\"row\" style=\"gap:10px\"><span class=\"dir-tile\" style=\"width:36px;height:36px;border-radius:12px;background:var(--lime)\">" + ICON.cap + "</span>" +
       "<p class=\"sec-title\">Что сдавать для поступления</p></div>" +
-      "<p style=\"font-size:14px;color:var(--muted)\">Направление «" + esc(top.tab) + "»</p>" +
+      "<p style=\"font-size:14px;color:var(--muted)\">" + esc(top.code + " «" + top.tab + "» · " + top.level) + "</p>" +
       "<div class=\"subjects\">" + top.ege.required.map(function (s) { return "<span class=\"req\">" + esc(s) + "</span>"; }).join("") + "</div>" +
-      "<p style=\"font-size:14px;font-weight:600\">и один предмет на выбор вуза:</p>" +
+      "<p style=\"font-size:14px;font-weight:600\">и один предмет на выбор:</p>" +
       "<div class=\"subjects\">" + top.ege.oneOf.map(function (s) { return "<span class=\"opt-s\">" + esc(s) + "</span>"; }).join("") + "</div>" +
       "<p class=\"note\">" + esc(P.egeNote.text) + "</p></section>";
 
@@ -659,6 +665,12 @@
 
     out.catalog = "";
     return { html: out, sc: sc };
+  }
+
+  // «пять направлений», «по пяти направлениям»: число направлений берётся из банка.
+  function dirCount(gen) {
+    var n = P.directions.length, w = { 4: ["четыре", "четырём"], 5: ["пять", "пяти"], 6: ["шесть", "шести"], 7: ["семь", "семи"], 8: ["восемь", "восьми"] }[n];
+    return w ? w[gen ? 1 : 0] : String(n);
   }
 
   function plural(n, one, few, many) {
@@ -693,7 +705,7 @@
       "<div class=\"row\"><button class=\"icon-btn press\" data-act=\"back\" aria-label=\"Назад\">" + ICON.back + "</button>" +
       "<p style=\"font-size:13px;font-weight:600;color:var(--muted)\">" + (S.back === "result" ? "Назад к итогу" : "На старт") + "</p></div>" +
       "<div><h1 class=\"display\" style=\"font-size:30px;line-height:1.1\" data-focus tabindex=\"-1\">Все профессии</h1>" +
-      "<p class=\"lead\" style=\"margin-top:8px;font-size:15px;line-height:1.45\">Семь направлений СЭИ. Выбирай любое — суперсилы можно совмещать.</p></div>" +
+      "<p class=\"lead\" style=\"margin-top:8px;font-size:15px;line-height:1.45\">" + cap(dirCount()) + " " + plural(n, "направление", "направления", "направлений") + " СЭИ. Выбирай любое — суперсилы можно совмещать.</p></div>" +
       "<nav class=\"chips\" aria-label=\"Направления\">" + P.directions.map(function (d) {
         return "<a href=\"#p-" + d.id + "\" data-act=\"jump\" data-id=\"" + d.id + "\"><span style=\"background:" + d.color + "\">" + dirIcon(d, 15, 2.6) + "</span>" + esc(d.tab) + "</a>";
       }).join("") + "</nav>" +
@@ -701,13 +713,15 @@
         return "<article class=\"prof\" id=\"p-" + d.id + "\" style=\"background:" + d.color + "\">" +
           (d.id === topId ? "<span class=\"tag mine\">Твоя суперсила</span>" : "") +
           "<div class=\"head\"><span class=\"ico\" style=\"color:" + d.color + "\">" + dirIcon(d, 28, 2.2) + "</span><span class=\"num\">" + pad2(k + 1) + " / " + pad2(n) + "</span></div>" +
-          "<h2>" + esc(d.name) + "</h2><p class=\"about\">" + esc(d.about) + "</p>" +
+          "<h2>" + esc(d.name) + "</h2>" +
+          "<p class=\"code\">" + esc(d.code + " " + d.tab + " · " + d.level) + "<br>" + plural(d.profiles.length, "Профиль", "Профили", "Профили") + ": " + esc(d.profiles.join("; ")) + "</p>" +
+          "<p class=\"about\">" + esc(d.about) + "</p>" +
           "<p class=\"lbl\">Примеры задач</p><ul class=\"tasks\">" + d.tasks.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>" +
           "<p class=\"lbl\">Где работают</p><div class=\"where\">" + d.where.map(function (t) { return "<span>" + esc(t) + "</span>"; }).join("") + "</div>" +
           "<p class=\"lbl\">Кем можно стать</p><ul class=\"tasks\">" + d.roles.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>" +
           "<div class=\"inner\"><p class=\"eyebrow\">ЕГЭ для поступления</p><div class=\"subjects\">" +
           d.ege.required.map(function (s) { return "<span class=\"req\">" + esc(s) + "</span>"; }).join("") + "</div>" +
-          "<p style=\"font-size:13px;font-weight:600\">+ один на выбор вуза: " + esc(d.ege.oneOf.join(", ").toLowerCase()) + "</p></div>" +
+          "<p style=\"font-size:13px;font-weight:600\">+ один на выбор: " + esc(orList(d.ege.oneOf).toLowerCase()) + "</p></div>" +
           "</article>";
       }).join("") +
       "<p class=\"note\">" + esc(P.egeNote.text) + "</p>" +
@@ -732,7 +746,7 @@
 
     // В блице реакция на выбор сама переходит дальше.
     if (S.screen === "play" && !S.paused && S.run.phase === "react" && app.querySelector(".timer")) {
-      autoTimer = setTimeout(next, 3000);
+      autoTimer = setTimeout(next, AUTO_S * 1000);
     }
   }
 
@@ -817,7 +831,7 @@
   // Общие помощники для общего режима (js/projector.js).
   P.ui = {
     esc: esc, svg: svg, dirIcon: dirIcon, dirDot: dirDot, banner: banner, ICON: ICON, KEYS: KEYS,
-    load: load, save: save, drop: drop, LS: LS, SS: SS, rnd: rnd, fx: fx, plural: plural,
+    load: load, save: save, drop: drop, LS: LS, SS: SS, rnd: rnd, fx: fx, plural: plural, orList: orList,
     seenList: seenList, reduced: reduced,
     DIR: DIR, BLOCK: BLOCK, SIT: SIT, QUICK: QUICK, CASE: CASE, QUIZ: QUIZ, MODE: MODE
   };

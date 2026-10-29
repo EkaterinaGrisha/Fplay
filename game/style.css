@@ -643,7 +643,7 @@ body.pj-mode { overflow: hidden; }
 .pj-btn.big { height: 92px; font-size: 32px; width: 100%; }
 .pj-btn.ghost.big { height: 76px; font-size: 24px; }
 .pj-btn:disabled { opacity: .45; cursor: default; transform: none; }
-.pj-link { border: 0; background: none; padding: 8px 0; display: inline-flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 700; color: var(--accent); cursor: pointer; }
+.pj-link { border: 0; background: none; padding: 8px 0; display: inline-flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 700; color: var(--accent); cursor: pointer; text-decoration: none; }
 .pj-link svg { width: 24px; height: 24px; }
 
 /* быстрый выбор и вопрос */

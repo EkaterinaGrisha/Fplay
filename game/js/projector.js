@@ -478,7 +478,12 @@
       "<p class=\"pj-lead\">Весь класс играет вместе: читаем ситуацию, голосуем поднятой рукой, ведущий отмечает вариант большинства. В конце — суперсила класса.</p>" +
       "<div class=\"pj-keys\"><p class=\"pj-eyebrow\" style=\"margin:0\">Управление</p>" +
       "<p><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> вариант</p><p><kbd>→</kbd> или пульт — дальше, <kbd>←</kbd> — назад</p>" +
-      "<p><kbd>Backspace</kbd> отменить выбор · <kbd>T</kbd> таймер заново · <kbd>F</kbd> во весь экран</p></div></div>" +
+      "<p><kbd>Backspace</kbd> отменить выбор · <kbd>T</kbd> таймер заново · <kbd>F</kbd> во весь экран</p>" +
+      "<div class=\"row\" style=\"gap:28px;flex-wrap:wrap;margin-top:6px\">" +
+      "<a class=\"pj-link\" href=\"host.html\" target=\"_blank\" rel=\"noopener\">" + ICON.book + "Памятка ведущего: сценарии на 15 и 40 минут</a>" +
+      // Архив лежит только на сайте; тому, кто открыл игру с диска, он уже не нужен.
+      (/^https?:$/.test(location.protocol) ? "<a class=\"pj-link\" href=\"profsila.zip\" download>" + ICON.download + "Скачать игру для работы без интернета</a>" : "") +
+      "</div></div></div>" +
       "<div class=\"pj-setup-right\">" + resume +
       "<p class=\"pj-eyebrow\">Сколько времени</p><div class=\"pj-modes\">" + P.modes.map(function (m) {
         var L = MODE_LABEL[m.id];

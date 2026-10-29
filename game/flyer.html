@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ПРОФСИЛА · листовка A4</title>
 <link rel="icon" href="assets/logo-sei.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2026-10-29">
 <style>
 /* Листовка A4 с QR-кодом. Печать: Ctrl+P (⌘P на Mac), формат A4, поля «нет». */
 @page { size: A4; margin: 0; }
@@ -81,17 +81,17 @@ html, body { background: #E9E5F7; }
   </section>
   <div class="f-facts">
     <div><b>5–40 мин</b><span>три режима игры</span></div>
-    <div><b>7</b><span>направлений профессий</span></div>
+    <div><b id="dir-n">5</b><span>направлений СЭИ</span></div>
     <div><b>0</b><span>регистраций и сбора данных</span></div>
   </div>
   <div class="f-dirs"><p>Направления</p><ul id="dirs"></ul></div>
   <p class="f-foot">Игра открывается в браузере телефона. Ответы считаются на самом телефоне и никуда не отправляются.</p>
 </main>
 
-<script src="config.js"></script>
-<script src="content/directions.js"></script>
-<script src="js/vendor/qrcode.js"></script>
-<script src="js/qr.js"></script>
+<script src="config.js?v=2026-10-29"></script>
+<script src="content/directions.js?v=2026-10-29"></script>
+<script src="js/vendor/qrcode.js?v=2026-10-29"></script>
+<script src="js/qr.js?v=2026-10-29"></script>
 <script>
 (function () {
   "use strict";
@@ -100,6 +100,7 @@ html, body { background: #E9E5F7; }
   document.getElementById("code").innerHTML = url ? P.qr.svg(url, "QR-код со ссылкой на игру") : "<p>Укажите адрес игры в config.js</p>";
   document.getElementById("url").textContent = url ? P.qr.shortUrl(url) : "";
 
+  document.getElementById("dir-n").textContent = P.directions.length;
   document.getElementById("dirs").innerHTML = P.directions.map(function (d) {
     var paths = [d.icon.a, d.icon.b, d.icon.c].filter(Boolean).map(function (p) { return "<path d=\"" + p + "\"></path>"; }).join("");
     return "<li style=\"background:" + d.color + "\"><i><svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"" + d.color +

@@ -38,6 +38,16 @@ function loadBank() {
 
 const engine = require(path.join(ROOT, "game", "js", "engine.js"));
 
+// Каждый режим играется в двух вариантах: на проекторе (общие настройки) и на телефоне (поле phone).
+function variants(bank) {
+  const out = [];
+  bank.modes.forEach((m) => {
+    out.push({ label: `${m.id}`, place: "проектор", device: null, mode: m });
+    if (m.phone) out.push({ label: `${m.id}/телефон`, place: "телефон", device: "phone", mode: engine.modeFor(bank, m.id, "phone") });
+  });
+  return out;
+}
+
 // ---------- проверки ----------
 
 function luminance(hex) {
@@ -67,7 +77,9 @@ function check(bank) {
   // Направления
   bank.directions.forEach((d) => {
     uniq(d.id, "направление");
-    ["short", "name", "tab", "color", "skill", "plus", "about", "you"].forEach((k) => { if (!d[k]) err(`${d.id}: нет поля ${k}`); });
+    ["short", "name", "tab", "code", "level", "color", "skill", "plus", "about", "you"].forEach((k) => { if (!d[k]) err(`${d.id}: нет поля ${k}`); });
+    if (!(d.profiles || []).length) err(`${d.id}: нет профиля`);
+    if (!d.ege || !(d.ege.oneOf || []).length) err(`${d.id}: нет предметов ЕГЭ на выбор`);
     if (!d.icon || !d.icon.a) err(`${d.id}: нет иконки`);
     if ((d.tasks || []).length !== 3) err(`${d.id}: задач должно быть 3`);
     if ((d.where || []).length < 3) err(`${d.id}: мест работы меньше 3`);
@@ -130,17 +142,20 @@ function check(bank) {
     });
   });
 
-  // Быстрые выборы
+  // Быстрые выборы: каждая пара направлений должна встречаться одинаковое число раз
   const quickPairs = new Map();
   bank.quick.items.forEach((q) => {
     uniq(q.id, "быстрый выбор");
     if (!isDir(q.a.dir) || !isDir(q.b.dir) || q.a.dir === q.b.dir) err(`${q.id}: неверные направления`);
     const k = pairKey(q.a.dir, q.b.dir);
-    if (quickPairs.has(k)) warn(`${q.id}: пара ${k} уже есть в ${quickPairs.get(k)}`);
-    quickPairs.set(k, q.id);
+    quickPairs.set(k, (quickPairs.get(k) || 0) + 1);
     long(q.a.text, 70, `${q.id} a`);
     long(q.b.text, 70, `${q.id} b`);
   });
+  const pairCounts = [];
+  for (let i = 0; i < dirs.length; i++) for (let j = i + 1; j < dirs.length; j++) pairCounts.push([pairKey(dirs[i], dirs[j]), quickPairs.get(pairKey(dirs[i], dirs[j])) || 0]);
+  const topPair = Math.max(...pairCounts.map((p) => p[1]));
+  pairCounts.filter((p) => p[1] < topPair).forEach((p) => warn(`быстрые выборы: пара ${p[0]} встречается ${p[1]} раз, а другие — по ${topPair}`));
 
   // Кейсы
   bank.cases.forEach((c) => {
@@ -171,17 +186,30 @@ function check(bank) {
 
   // Режимы и достижения
   const minBlock = Math.min(...bank.blocks.map((b) => b.situations.length));
-  bank.modes.forEach((m) => {
-    if (m.perBlock > minBlock) err(`режим ${m.id}: берёт ${m.perBlock} из блока, а в самом маленьком блоке ${minBlock}`);
-    if ((m.quick || 0) > bank.quick.items.length) err(`режим ${m.id}: быстрых выборов не хватает`);
-    if ((m.cases || 0) > bank.cases.length) err(`режим ${m.id}: кейсов не хватает`);
-    if (m.quizAfterBlocks && m.quizAfterBlocks.length !== m.quiz) err(`режим ${m.id}: quizAfterBlocks не совпадает с quiz`);
-    m.result.forEach((r) => { if (!RESULT_SECTIONS.includes(r)) err(`режим ${m.id}: неизвестный раздел итога ${r}`); });
+  variants(bank).forEach(({ label, mode: m }) => {
+    if (m.perBlock > minBlock) err(`режим ${label}: берёт ${m.perBlock} из блока, а в самом маленьком блоке ${minBlock}`);
+    if ((m.quick || 0) > bank.quick.items.length) err(`режим ${label}: быстрых выборов не хватает`);
+    if ((m.cases || 0) > bank.cases.length) err(`режим ${label}: кейсов не хватает`);
+    if (m.quizEvery) {
+      const sits = m.perBlock * bank.blocks.length;
+      if (m.quizEvery * m.quiz > sits) err(`режим ${label}: ${m.quiz} вопросов через каждые ${m.quizEvery} ситуаций не помещаются в ${sits} ситуаций`);
+    } else if (m.quizAfterBlocks && m.quizAfterBlocks.length !== m.quiz) err(`режим ${label}: quizAfterBlocks не совпадает с quiz`);
+    if (m.quiz > bank.quiz.length) err(`режим ${label}: вопросов «Проверь себя» не хватает`);
+    if (!m.desc) err(`режим ${label}: нет описания`);
+    m.result.forEach((r) => { if (!RESULT_SECTIONS.includes(r)) err(`режим ${label}: неизвестный раздел итога ${r}`); });
   });
   bank.badges.forEach((b) => {
     if (!BADGE_RULES.includes(b.rule.type)) err(`достижение ${b.id}: неизвестное правило ${b.rule.type}`);
     b.modes.forEach((m) => { if (!bank.modes.some((x) => x.id === m)) err(`достижение ${b.id}: нет режима ${m}`); });
     if (b.rule.block && !bank.blocks.some((x) => x.id === b.rule.block)) err(`достижение ${b.id}: нет блока ${b.rule.block}`);
+  });
+
+  // Метка ?v= у скриптов и стилей страниц должна совпадать с версией банка,
+  // иначе браузеры игроков после обновления смешают старые файлы с новыми.
+  ["index.html", "flyer.html", "host.html"].forEach((page) => {
+    const html = fs.readFileSync(path.join(ROOT, "game", page), "utf8");
+    const refs = [...html.matchAll(/(?:src|href)="((?:content|js)\/[^"]+\.js|config\.js|style\.css)(?:\?v=([^"]*))?"/g)];
+    refs.forEach((m) => { if (m[2] !== bank.meta.bankVersion) err(`${page}: у ${m[1]} метка ?v=${m[2] || "(нет)"}, а версия банка ${bank.meta.bankVersion}`); });
   });
 
   return { errors, warns, quizByDir, correctPos, terms: terms.size };
@@ -229,7 +257,7 @@ function play(game, strategy, rng) {
 function simulate(bank, runs) {
   const dirs = bank.directions.map((d) => d.id);
   const out = [];
-  bank.modes.forEach((m) => {
+  variants(bank).forEach(({ label, device, mode: m }) => {
     const rng = engine.makeRng(20261028);
     const stats = {
       tries: 0, failed: 0, screens: 0,
@@ -241,7 +269,7 @@ function simulate(bank, runs) {
       badges: {}
     };
     for (let i = 0; i < runs; i++) {
-      const game = engine.drawGame(bank, m.id, { rng });
+      const game = engine.drawGame(bank, m.id, { rng, device });
       stats.tries += game.tries;
       if (game.minAppear < m.minPerDir) stats.failed++;
       stats.screens += game.screens.length;
@@ -257,7 +285,7 @@ function simulate(bank, runs) {
       if (sc.tied.length > 1) stats.ties++;
       const quizTotal = game.screens.filter((s) => s.type === "quiz").length;
       const quizCorrect = Array.from({ length: quizTotal }, () => (rng() < 0.6 ? 1 : 0)).reduce((a, b) => a + b, 0);
-      engine.earnedBadges(bank, m.id, { picks, sc, quizCorrect, quizTotal })
+      engine.earnedBadges(bank, m.id, { picks, sc, quizCorrect, quizTotal, device })
         .forEach((b) => { stats.badges[b.id] = (stats.badges[b.id] || 0) + 1; });
 
       // «Верный» игрок: всегда выбирает своё направление, если оно есть среди вариантов.
@@ -265,7 +293,7 @@ function simulate(bank, runs) {
       const loyalPicks = play(game, (offered, r) => (offered.includes(fav) ? fav : offered[Math.floor(r() * offered.length)]), rng);
       if (engine.score(bank, loyalPicks).top === fav) stats.loyal[fav]++;
     }
-    out.push({ mode: m, stats });
+    out.push({ label, mode: m, stats });
   });
   return out;
 }
@@ -289,9 +317,9 @@ function report(bank) {
 
   const RUNS = 20000;
   console.log(`\nСимуляция: по ${RUNS} случайных партий на режим\n`);
-  simulate(bank, RUNS).forEach(({ mode, stats }) => {
+  simulate(bank, RUNS).forEach(({ label, mode, stats }) => {
     const r = (x) => (x / RUNS * 100).toFixed(1);
-    console.log(`[${mode.id}] ${mode.name}, ${mode.minutes} мин · экранов в партии: ${(stats.screens / RUNS).toFixed(1)}`);
+    console.log(`[${label}] ${mode.name}, ${mode.minutes} мин · экранов в партии: ${(stats.screens / RUNS).toFixed(1)}`);
     console.log(`  набор собирается с ${(stats.tries / RUNS).toFixed(2)} попытки в среднем; не удалось выдержать минимум ${mode.minPerDir}: ${stats.failed}`);
     console.log("  встреч направления за партию (мин / среднее): " +
       dirs.map((d) => `${d} ${stats.appearMin[d]}/${(stats.appearSum[d] / RUNS).toFixed(1)}`).join(" · "));
@@ -341,15 +369,15 @@ function toMarkdown(bank) {
 
   L.push("## Режимы и правила выпадения");
   L.push("");
-  L.push("| Режим | Время | Что в партии | Из каждого блока | Минимум встреч направления | Что показываем в итоге |");
-  L.push("|---|---|---|---|---|---|");
+  L.push("| Режим | Где | Время | Что в партии | Из каждого блока | Минимум встреч направления | Что показываем в итоге |");
+  L.push("|---|---|---|---|---|---|---|");
   const sectionNames = {
     superpower: "суперсила", second: "вторая сила", combo: "сочетание", profile: "профиль", badges: "достижения",
     caseTeam: "роль в кейсе", ege: "предметы ЕГЭ", terms: "словарик", quiz: "звание за «Проверь себя»",
     fact: "«Знаешь ли ты»", tryNow: "«Попробуй сейчас»", catalog: "все профессии", more: "приглашение в стандарт"
   };
-  bank.modes.forEach((m) => {
-    L.push(`| ${m.name} | ${m.minutes} мин | ${m.desc} | ${m.perBlock} | ${m.minPerDir} | ${m.result.map((r) => sectionNames[r]).join(", ")} |`);
+  variants(bank).forEach(({ place, mode: m }) => {
+    L.push(`| ${m.name} | ${place} | ${m.minutes} мин | ${m.desc} | ${m.perBlock} | ${m.minPerDir} | ${m.result.map((r) => sectionNames[r]).join(", ")} |`);
   });
   L.push("");
   L.push(`Баллы: выбор в ситуации или кейсе +${bank.scoring.situationPoints}, быстрый выбор +${bank.scoring.quickPoints}. Итог направления — доля набранных баллов от баллов, которые оно могло набрать, поэтому направление, которое выпало реже, не проигрывает.`);
@@ -367,7 +395,7 @@ function toMarkdown(bank) {
   bank.directions.forEach((d) => {
     L.push(`### ${d.short} · ${d.name}`);
     L.push("");
-    L.push(`Вкладка: «${d.tab}» · цвет \`${d.color}\` · навык: ${d.skill}`);
+    L.push(`Направление: ${d.code} «${d.tab}», ${d.level} · профиль: ${d.profiles.join("; ")} · цвет \`${d.color}\` · навык: ${d.skill}`);
     L.push("");
     L.push(`**Кто это.** ${d.about}`);
     L.push("");
@@ -377,7 +405,7 @@ function toMarkdown(bank) {
     L.push("");
     L.push(`**Где работают:** ${d.where.join(", ")}. **Кем можно стать:** ${d.roles.join(", ")}.`);
     L.push("");
-    L.push(`**ЕГЭ:** ${d.ege.required.join(", ")} + один из предметов: ${d.ege.oneOf.join(", ")} (чаще всего — ${d.ege.typical.toLowerCase()}). Сверка по направлению ${d.ege.basis}.`);
+    L.push(`**ЕГЭ:** ${d.ege.required.join(", ")} + один из предметов: ${d.ege.oneOf.join(", ")}.`);
     L.push("");
     L.push("**Знаешь ли ты:**");
     d.facts.forEach((f) => L.push(`- ${f}`));
@@ -474,7 +502,7 @@ function toMarkdown(bank) {
   L.push("");
   L.push("| Название | Когда даётся | Режимы |");
   L.push("|---|---|---|");
-  bank.badges.forEach((b) => L.push(`| ${b.title} | ${b.text} | ${b.modes.join(", ")} |`));
+  bank.badges.forEach((b) => L.push(`| ${b.title} | ${b.text}${b.phone && b.phone.text ? ` На телефоне: «${b.phone.text}»` : ""}${b.phone && b.phone.rule ? " На телефоне порог выше." : ""} | ${b.modes.join(", ")} |`));
   L.push("");
 
   return L.join("\n");

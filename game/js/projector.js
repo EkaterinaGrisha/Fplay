@@ -12,8 +12,15 @@
   var U = P.ui;
   var app = document.getElementById("app");
   var esc = U.esc, ICON = U.ICON, LETTERS = U.KEYS;
-  var DIR = U.DIR, SIT = U.SIT, QUICK = U.QUICK, CASE = U.CASE, QUIZ = U.QUIZ, MODE = U.MODE;
-  var TIMER = (P.classroom && P.classroom.timerSeconds) || 20;
+  var DIR = U.DIR, SIT = U.SIT, QUICK = U.QUICK, CASE = U.CASE, QUIZ = U.QUIZ, MODE = {};
+  // На проекторе — общие настройки длительности, без телефонных (у app.js в U.MODE они телефонные).
+  P.modes.forEach(function (m) { MODE[m.id] = m; });
+  var CLS = P.classroom || {};
+  var ADD = CLS.addSeconds || 30;
+  // Время на голосование по умолчанию: при подсчёте рук его нужно больше.
+  function timerFor(voting) { return voting === "exact" ? (CLS.timerExact || 90) : (CLS.timerQuick || 45); }
+  function clock(t) { var m = Math.floor(t / 60), s = t % 60; return m + ":" + (s < 10 ? "0" : "") + s; }
+  function timerName(t) { return !t ? "Без таймера" : t < 60 ? t + " с" : t % 60 ? (t / 60).toString().replace(".", ",") + " мин" : t / 60 + " мин"; }
 
   var MODE_LABEL = {
     blitz: { title: "Разминка", sub: "6 ситуаций и 4 быстрых выбора, без разборов" },
@@ -26,13 +33,15 @@
     screen: "setup",
     modeId: "std",
     voting: "quick",
+    timer: timerFor("quick"),
+    timerPicked: false,
     run: null,
     result: null,
     back: "setup",
     dialog: false,
     saved: null
   };
-  var timerId = null, timeLeft = TIMER;
+  var timerId = null, timeLeft = 0;
 
   function sized(icon, size) { return icon.replace(/width="\d+" height="\d+"/, 'width="' + size + '" height="' + size + '"'); }
 
@@ -91,7 +100,7 @@
   function exact(f) { return J.voting === "exact" && f.t !== "quiz"; }
 
   function persist() {
-    if (J.run) U.save(U.SS, "profsila.proj", { modeId: J.modeId, voting: J.voting, run: J.run });
+    if (J.run) U.save(U.SS, "profsila.proj", { v: P.meta.bankVersion, modeId: J.modeId, voting: J.voting, timer: J.timer, run: J.run });
   }
 
   function startRun() {
@@ -243,9 +252,10 @@
 
   // ---------- таймер голосования ----------
 
-  function startTimer() {
+  function startTimer(seconds) {
     stopTimer();
-    timeLeft = TIMER;
+    if (!J.timer) return;
+    timeLeft = seconds || J.timer;
     paintTimer();
     timerId = setInterval(function () {
       timeLeft -= 1;
@@ -254,11 +264,16 @@
     }, 1000);
   }
   function stopTimer() { clearInterval(timerId); timerId = null; }
+  // «+30 с»: продлевает идущий таймер или запускает его снова, если время вышло.
+  function addTime() {
+    if (!J.timer || J.screen !== "play" || J.run.phase !== "ask" || !isQuestion(cur())) return;
+    if (timerId) { timeLeft += ADD; paintTimer(); } else startTimer(Math.max(0, timeLeft) + ADD);
+  }
   function paintTimer() {
     var el = document.getElementById("pj-timer");
     if (!el) return;
     var t = Math.max(0, timeLeft);
-    el.querySelector("span").textContent = t > 0 ? "0:" + (t < 10 ? "0" : "") + t : "Время!";
+    el.querySelector("span").textContent = t > 0 ? clock(t) : "Время!";
     el.classList.toggle("late", t <= 0);
   }
 
@@ -337,7 +352,8 @@
       "<div class=\"row\" style=\"gap:16px\">" +
       (ex ? "<button class=\"pj-btn dark press\" data-pj=\"finalize\"" + (sum ? "" : " disabled") + ">Подвести итог</button>" : "") +
       (f.t === "quiz" && !ex ? "<button class=\"pj-btn press\" data-pj=\"reveal\">Показать ответ</button>" : "") +
-      "<p class=\"pj-timer\" id=\"pj-timer\">" + ICON.clock + "<span>0:" + TIMER + "</span></p></div></div>";
+      (J.timer ? "<button class=\"pj-btn ghost press\" data-pj=\"more-time\" title=\"Клавиша +\">+" + ADD + " с</button>" +
+        "<p class=\"pj-timer\" id=\"pj-timer\">" + ICON.clock + "<span>" + clock(J.timer) + "</span></p>" : "") + "</div></div>";
   }
 
   function reactBanner(f) {
@@ -477,8 +493,8 @@
       "<div>" + logoWord(140, true) + "<span class=\"pj-badge big\">Общий режим</span></div>" +
       "<p class=\"pj-lead\">Весь класс играет вместе: читаем ситуацию, голосуем поднятой рукой, ведущий отмечает вариант большинства. В конце — суперсила класса.</p>" +
       "<div class=\"pj-keys\"><p class=\"pj-eyebrow\" style=\"margin:0\">Управление</p>" +
-      "<p><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> вариант</p><p><kbd>→</kbd> или пульт — дальше, <kbd>←</kbd> — назад</p>" +
-      "<p><kbd>Backspace</kbd> отменить выбор · <kbd>T</kbd> таймер заново · <kbd>F</kbd> во весь экран</p>" +
+      "<p><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> вариант · <kbd>Backspace</kbd> отменить выбор</p><p><kbd>→</kbd> или пульт — дальше, <kbd>←</kbd> — назад</p>" +
+      "<p><kbd>T</kbd> таймер заново · <kbd>+</kbd> ещё " + ADD + " с · <kbd>F</kbd> во весь экран</p>" +
       "<div class=\"row\" style=\"gap:28px;flex-wrap:wrap;margin-top:6px\">" +
       "<a class=\"pj-link\" href=\"host.html\" target=\"_blank\" rel=\"noopener\">" + ICON.book + "Памятка ведущего: сценарии на 15 и 40 минут</a>" +
       // Архив лежит только на сайте; тому, кто открыл игру с диска, он уже не нужен.
@@ -493,6 +509,9 @@
       "<p class=\"pj-eyebrow\">Как считаем голоса</p><div class=\"pj-votes\">" +
       "<button class=\"pj-mode press\" data-pj=\"voting\" data-id=\"quick\" aria-pressed=\"" + (J.voting === "quick") + "\"><span class=\"n\">Быстро</span><span class=\"d\">Ведущий нажимает вариант, за который подняли больше рук</span></button>" +
       "<button class=\"pj-mode press\" data-pj=\"voting\" data-id=\"exact\" aria-pressed=\"" + (J.voting === "exact") + "\"><span class=\"n\">Точно</span><span class=\"d\">Ведущий считает руки за каждый вариант — профиль класса честнее</span></button></div>" +
+      "<p class=\"pj-eyebrow\">Время на голосование</p><div class=\"pj-timers\">" + (CLS.timerChoices || [45, 60, 90, 120, 0]).map(function (t) {
+        return "<button class=\"pj-mode press\" data-pj=\"timer\" data-s=\"" + t + "\" aria-pressed=\"" + (t === J.timer) + "\"><span class=\"n\">" + timerName(t) + "</span></button>";
+      }).join("") + "</div>" +
       "<button class=\"pj-btn cta big press\" data-pj=\"start\">" + sized(ICON.play, 34) + "Начать игру</button>" +
       "<div class=\"pj-pair\"><button class=\"pj-btn ghost press\" data-pj=\"invite\">" + sized(ICON.qr, 28) + "QR для телефонов</button>" +
       "<a class=\"pj-btn ghost press\" href=\"flyer.html\" target=\"_blank\" rel=\"noopener\">" + sized(ICON.print, 28) + "Листовка A4</a></div>" +
@@ -556,12 +575,13 @@
   function viewCatalog() {
     var topId = J.result ? E.score(P, J.result.picks).top : null;
     return topBar("<p class=\"pj-count\">Все профессии</p>", "<button class=\"pj-icon press\" data-pj=\"catalog-back\" aria-label=\"Назад\" title=\"Назад\">" + sized(ICON.back, 24) + "</button>") +
-      "<div class=\"pj-catalog\">" + P.directions.map(function (d) {
+      "<div class=\"pj-catalog\" style=\"grid-template-columns:repeat(" + Math.ceil((P.directions.length + 1) / 2) + ", minmax(0, 1fr))\">" + P.directions.map(function (d) {
         return "<article class=\"pj-prof\" style=\"background:" + d.color + "\">" + (d.id === topId ? "<span class=\"pj-mine\">Суперсила класса</span>" : "") +
           "<span class=\"pj-prof-ico\" style=\"color:" + d.color + "\">" + U.dirIcon(d, 34, 2.2) + "</span>" +
-          "<h2" + (d.name.length > 26 ? " class=\"long\"" : "") + ">" + esc(d.name) + "</h2><p class=\"pj-prof-about\">" + esc(d.about) + "</p>" +
+          "<h2" + (d.name.length > 26 ? " class=\"long\"" : "") + ">" + esc(d.name) + "</h2>" +
+          "<p class=\"pj-prof-code\">" + esc(d.code + " " + d.tab + " · " + d.level) + "</p><p class=\"pj-prof-about\">" + esc(d.about) + "</p>" +
           "<p class=\"pj-prof-lbl\">Кем можно стать</p><p class=\"pj-prof-roles\">" + esc(d.roles.join(" · ")) + "</p>" +
-          "<p class=\"pj-prof-lbl\">ЕГЭ</p><p class=\"pj-prof-roles\">" + esc(d.ege.required.join(", ")) + " + на выбор вуза</p></article>";
+          "<p class=\"pj-prof-lbl\">ЕГЭ</p><p class=\"pj-prof-roles\">" + esc(d.ege.required.join(", ") + " + " + U.orList(d.ege.oneOf).toLowerCase()) + "</p></article>";
       }).join("") +
       "<article class=\"pj-prof pj-prof-note\"><p class=\"pj-prof-lbl\">Подсказка</p><p class=\"pj-prof-about\">Суперсилы можно совмещать. Сыграйте ещё раз — и сравните, как изменится профиль класса.</p>" +
       "<button class=\"pj-btn dark press\" data-pj=\"catalog-back\">" + ICON.back + "Назад</button></article></div>";
@@ -583,6 +603,12 @@
 
   function go(screen) { stopTimer(); J.dialog = false; J.screen = screen; render(); }
 
+  // Незаконченная партия из этой вкладки; сохранённую прошлой версией банка не предлагаем.
+  function loadSaved() {
+    var s = U.load(U.SS, "profsila.proj", null);
+    return s && s.run && s.v === P.meta.bankVersion ? s : null;
+  }
+
   // ---------- события ----------
 
   app.addEventListener("click", function (e) {
@@ -593,13 +619,18 @@
     switch (act) {
       case "full": toggleFullscreen(); break;
       case "mode": J.modeId = t.getAttribute("data-id"); render(); break;
-      case "voting": J.voting = t.getAttribute("data-id"); render(); break;
+      case "voting": J.voting = t.getAttribute("data-id"); if (!J.timerPicked) J.timer = timerFor(J.voting); render(); break;
+      case "timer": J.timer = +t.getAttribute("data-s"); J.timerPicked = true; render(); break;
+      case "more-time": addTime(); break;
       case "start": U.drop(U.SS, "profsila.proj"); startRun(); break;
-      case "resume": J.modeId = J.saved.modeId; J.voting = J.saved.voting; J.run = J.saved.run; J.saved = null; J.screen = "play"; enter(); break;
+      case "resume":
+        J.modeId = J.saved.modeId; J.voting = J.saved.voting; J.run = J.saved.run;
+        J.timer = J.saved.timer != null ? J.saved.timer : timerFor(J.voting);
+        J.saved = null; J.screen = "play"; enter(); break;
       case "personal": location.hash = ""; break;
       case "catalog": J.back = J.screen; go("catalog"); break;
       case "catalog-back": go(J.back === "catalog" ? "setup" : J.back); break;
-      case "setup": J.saved = U.load(U.SS, "profsila.proj", null); go("setup"); break;
+      case "setup": J.saved = loadSaved(); go("setup"); break;
       case "pick": choose(+t.getAttribute("data-k"), false); break;
       case "minus": e.stopPropagation(); choose(+t.getAttribute("data-k"), true); break;
       case "finalize": finalize(); break;
@@ -635,6 +666,7 @@
     if (key === "ArrowLeft" || key === "PageUp") { e.preventDefault(); backward(); return; }
     if (key === "Backspace" || key === "Delete") { e.preventDefault(); cancel(); return; }
     if (code === "KeyT") { e.preventDefault(); if (J.run.phase === "ask" && isQuestion(cur())) startTimer(); }
+    if (key === "+" || code === "Equal" || code === "NumpadAdd") { e.preventDefault(); addTime(); }
   });
 
   P.projector = {
@@ -643,8 +675,7 @@
       J.active = true;
       document.body.classList.add("pj-mode");
       if (!J.run) {
-        J.saved = U.load(U.SS, "profsila.proj", null);
-        if (J.saved && !J.saved.run) J.saved = null;
+        J.saved = loadSaved();
       }
       if (J.screen === "play" && !J.run) J.screen = "setup";
       enter();

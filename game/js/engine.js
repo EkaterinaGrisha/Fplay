@@ -45,6 +45,18 @@
     throw new Error("Нет режима " + modeId);
   }
 
+  // Режим для устройства: на телефоне (device = "phone") поверх общих настроек
+  // ложатся поля из mode.phone — там заданий больше, потому что каждый отвечает сам.
+  function modeFor(bank, modeId, device) {
+    var base = findMode(bank, modeId);
+    var extra = device && base[device];
+    if (!extra) return base;
+    var out = {};
+    Object.keys(base).forEach(function (k) { if (k !== "phone") out[k] = base[k]; });
+    Object.keys(extra).forEach(function (k) { out[k] = extra[k]; });
+    return out;
+  }
+
   function dirIds(bank) {
     return bank.directions.map(function (d) { return d.id; });
   }
@@ -95,12 +107,17 @@
       });
       quiz.forEach(function (q) { screens.push({ type: "quiz", item: q }); });
     } else {
+      // Вопрос ставится после каждого quizEvery-й ситуации или после блоков из quizAfterBlocks.
       var quizAfter = mode.quizAfterBlocks || [];
-      var qi = 0;
+      var qi = 0, sit = 0;
       blocks.forEach(function (b, i) {
-        b.items.forEach(function (s) { screens.push({ type: "situation", block: b.block.id, item: s }); });
+        b.items.forEach(function (s) {
+          screens.push({ type: "situation", block: b.block.id, item: s });
+          sit++;
+          if (mode.quizEvery && sit % mode.quizEvery === 0 && quiz[qi]) screens.push({ type: "quiz", item: quiz[qi++] });
+        });
         if (mode.caseAfterBlock === i + 1) cases.forEach(function (c) { screens.push({ type: "case", item: c }); });
-        if (quizAfter.indexOf(i + 1) >= 0 && quiz[qi]) screens.push({ type: "quiz", item: quiz[qi++] });
+        if (!mode.quizEvery && quizAfter.indexOf(i + 1) >= 0 && quiz[qi]) screens.push({ type: "quiz", item: quiz[qi++] });
       });
     }
 
@@ -109,10 +126,10 @@
     return { mode: mode.id, screens: screens, appear: appear, minAppear: min };
   }
 
-  // Собирает партию. opts: { seed, rng, seen: ["m1", ...], maxTries }.
+  // Собирает партию. opts: { seed, rng, seen: ["m1", ...], maxTries, device: "phone" }.
   function drawGame(bank, modeId, opts) {
     opts = opts || {};
-    var mode = findMode(bank, modeId);
+    var mode = modeFor(bank, modeId, opts.device);
     var rng = opts.rng || makeRng(opts.seed != null ? opts.seed : Date.now());
     var seen = {};
     (opts.seen || []).forEach(function (id) { seen[id] = true; });
@@ -193,16 +210,29 @@
     return null;
   }
 
-  // state: { picks, sc (результат score), quizCorrect, quizTotal }
+  // Достижение для устройства: на телефоне заданий больше, поэтому поля из b.phone
+  // (text и уточнения rule) делают порог выше.
+  function badgeFor(b, device) {
+    var extra = device && b[device];
+    if (!extra) return b;
+    var rule = {};
+    Object.keys(b.rule).forEach(function (k) { rule[k] = b.rule[k]; });
+    Object.keys(extra.rule || {}).forEach(function (k) { rule[k] = extra.rule[k]; });
+    return { id: b.id, title: b.title, text: extra.text || b.text, rule: rule, modes: b.modes };
+  }
+
+  // state: { picks, sc (результат score), quizCorrect, quizTotal, device }
   function earnedBadges(bank, modeId, state) {
     var sc = state.sc;
     var totalPicks = state.picks.length;
-    return bank.badges.filter(function (b) {
+    return bank.badges.map(function (b) { return badgeFor(b, state.device); }).filter(function (b) {
       if (b.modes.indexOf(modeId) < 0) return false;
       var r = b.rule;
+      // Порог может зависеть от режима: min: { std: 3, deep: 5 }.
+      var min = r.min && typeof r.min === "object" ? r.min[modeId] : r.min;
       switch (r.type) {
         case "allDirs":
-          return Object.keys(sc.chosen).every(function (d) { return sc.chosen[d] > 0; });
+          return Object.keys(sc.chosen).every(function (d) { return sc.chosen[d] >= (min || 1); });
         case "focus":
           return totalPicks > 0 && sc.chosen[sc.top] / totalPicks >= r.share;
         case "spread":
@@ -210,11 +240,11 @@
         case "quizPerfect":
           return state.quizTotal >= r.minQuestions && state.quizCorrect === state.quizTotal;
         case "blockDir":
-          return state.picks.filter(function (p) { return p.block === r.block && p.dir === r.dir; }).length >= r.min;
+          return state.picks.filter(function (p) { return p.block === r.block && p.dir === r.dir; }).length >= min;
         case "caseRoles":
           var seen = {};
           state.picks.forEach(function (p) { if (p.kind === "case") seen[p.dir] = true; });
-          return Object.keys(seen).length >= r.min;
+          return Object.keys(seen).length >= min;
         default:
           return false;
       }
@@ -242,6 +272,7 @@
     makeRng: makeRng,
     shuffle: shuffle,
     drawGame: drawGame,
+    modeFor: modeFor,
     shuffledOptions: shuffledOptions,
     score: score,
     findCombo: findCombo,

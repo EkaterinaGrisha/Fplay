@@ -489,6 +489,8 @@
       "<button class=\"pj-mode press\" data-pj=\"voting\" data-id=\"quick\" aria-pressed=\"" + (J.voting === "quick") + "\"><span class=\"n\">Быстро</span><span class=\"d\">Ведущий нажимает вариант, за который подняли больше рук</span></button>" +
       "<button class=\"pj-mode press\" data-pj=\"voting\" data-id=\"exact\" aria-pressed=\"" + (J.voting === "exact") + "\"><span class=\"n\">Точно</span><span class=\"d\">Ведущий считает руки за каждый вариант — профиль класса честнее</span></button></div>" +
       "<button class=\"pj-btn cta big press\" data-pj=\"start\">" + sized(ICON.play, 34) + "Начать игру</button>" +
+      "<div class=\"pj-pair\"><button class=\"pj-btn ghost press\" data-pj=\"invite\">" + sized(ICON.qr, 28) + "QR для телефонов</button>" +
+      "<a class=\"pj-btn ghost press\" href=\"flyer.html\" target=\"_blank\" rel=\"noopener\">" + sized(ICON.print, 28) + "Листовка A4</a></div>" +
       "<div class=\"row\" style=\"justify-content:space-between\"><button class=\"pj-link\" data-pj=\"catalog\">" + ICON.grid + "Все профессии</button>" +
       "<button class=\"pj-link\" data-pj=\"personal\">Личный режим на телефоне →</button></div>" +
       "<p class=\"pj-wait-sub\" style=\"font-size:18px\">Работает без интернета. Регистрации и сбора данных нет.</p>" +
@@ -522,8 +524,28 @@
       (res.quizTotal ? "<section class=\"pj-panel pj-panel-row\"><span class=\"pj-score\">" + res.quizCorrect + "/" + res.quizTotal + "</span>" +
         "<div><p class=\"pj-eyebrow\" style=\"margin:0\">Проверь себя</p><p class=\"pj-panel-text\">Класс ответил верно на " + res.quizCorrect + " " + U.plural(res.quizCorrect, "вопрос", "вопроса", "вопросов") + " из " + res.quizTotal + "</p></div></section>" : "") +
       "<div class=\"pj-actions\"><button class=\"pj-btn cta big press\" data-pj=\"setup\">" + sized(ICON.retry, 28) + "Новая игра</button>" +
-      "<button class=\"pj-btn ghost big press\" data-pj=\"catalog\">" + ICON.grid + "Все профессии</button></div>" +
+      "<div class=\"pj-pair\"><button class=\"pj-btn ghost press\" data-pj=\"catalog\">" + ICON.grid + "Все профессии</button>" +
+      "<button class=\"pj-btn ghost press\" data-pj=\"invite\">" + sized(ICON.qr, 26) + "Каждому на телефон</button></div></div>" +
       "</div></div>";
+  }
+
+  // Приглашение сыграть в личном режиме: большой QR со ссылкой из config.js.
+  function viewInvite() {
+    var url = P.qr.playUrl();
+    var steps = ["Откройте камеру и наведите её на код", "Выберите, сколько у вас времени", "Узнайте свою суперсилу и сравните с соседом"];
+    return topBar("<p class=\"pj-count\">Личный режим на телефонах</p>",
+      "<button class=\"pj-icon press\" data-pj=\"invite-back\" aria-label=\"Назад\" title=\"Назад\">" + sized(ICON.back, 24) + "</button>") +
+      "<div class=\"pj-invite\"><div class=\"pj-qr\">" +
+      (url ? P.qr.svg(url, "QR-код со ссылкой на игру: " + url) : "<p class=\"pj-wait-sub\">Укажите адрес игры в файле config.js — и здесь появится QR-код.</p>") + "</div>" +
+      "<div class=\"pj-invite-text\"><p class=\"pj-eyebrow\" style=\"margin:0\">Личный режим</p>" +
+      "<h1 class=\"pj-invite-h\">Сыграйте каждый на своём телефоне</h1>" +
+      "<ol class=\"pj-invite-steps\">" + steps.map(function (s, k) {
+        return "<li><span class=\"pj-step-n\">" + (k + 1) + "</span>" + esc(s) + "</li>";
+      }).join("") + "</ol>" +
+      (url ? "<p class=\"pj-url\">" + esc(P.qr.shortUrl(url)) + "</p>" : "") +
+      "<p class=\"pj-wait-sub\">Интернет нужен телефону только чтобы открыть страницу. Регистрации нет, ответы никуда не отправляются.</p>" +
+      "<div class=\"row\" style=\"gap:16px\"><button class=\"pj-btn dark press\" data-pj=\"invite-back\">" + ICON.back + "Назад</button>" +
+      "<a class=\"pj-btn ghost press\" href=\"flyer.html\" target=\"_blank\" rel=\"noopener\">" + sized(ICON.print, 26) + "Листовка A4</a></div></div></div>";
   }
 
   function viewCatalog() {
@@ -545,6 +567,7 @@
     if (J.screen === "setup") html = viewSetup();
     else if (J.screen === "play") html = viewPlay();
     else if (J.screen === "result") html = viewResult();
+    else if (J.screen === "invite") html = viewInvite();
     else html = viewCatalog();
     app.innerHTML = "<div class=\"pj-viewport\"><div class=\"pj-stage\">" + html + "</div></div>";
     fit();
@@ -584,6 +607,8 @@
       case "close-dialog": J.dialog = false; render(); break;
       case "finish": finish(); break;
       case "leave": J.run = null; J.saved = null; U.drop(U.SS, "profsila.proj"); go("setup"); break;
+      case "invite": J.inviteBack = J.screen; go("invite"); break;
+      case "invite-back": go(J.inviteBack || "setup"); break;
     }
   }, true);
 
@@ -592,6 +617,7 @@
     var code = e.code, key = e.key;
     if (code === "KeyF") { e.preventDefault(); toggleFullscreen(); return; }
     if (J.dialog) { if (key === "Escape") { J.dialog = false; render(); } return; }
+    if (J.screen === "invite" && (key === "Escape" || key === "ArrowLeft" || key === "PageUp")) { e.preventDefault(); go(J.inviteBack || "setup"); return; }
     if (J.screen !== "play") return;
     var digit = /^(Digit|Numpad)([1-4])$/.exec(code);
     var letter = /^Key([A-D])$/.exec(code);

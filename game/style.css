@@ -633,7 +633,10 @@ body.pj-mode { overflow: hidden; }
   border: 3px solid var(--ink); background: transparent; color: var(--ink);
   display: inline-flex; align-items: center; justify-content: center; gap: 12px;
   font-family: var(--text); font-weight: 700; font-size: 22px; white-space: nowrap; cursor: pointer;
+  text-decoration: none;
 }
+.pj-btn:hover { color: var(--ink); }
+.pj-btn.dark:hover { color: #FFFFFF; }
 .pj-btn.dark { background: var(--ink); color: #FFFFFF; font-family: var(--display); font-weight: 800; font-size: 24px; }
 .pj-btn.cta { background: var(--lime); box-shadow: 0 6px 0 var(--ink); font-family: var(--display); font-weight: 800; font-size: 26px; }
 .pj-btn.cta:active { box-shadow: 0 2px 0 var(--ink); }
@@ -737,3 +740,19 @@ kbd { display: inline-block; min-width: 40px; margin-right: 6px; padding: 4px 10
 .pj-dialog { width: 720px; padding: 44px; border-radius: 40px; background: var(--card); border: 4px solid var(--ink); box-shadow: 0 10px 0 var(--ink); display: flex; flex-direction: column; gap: 18px; }
 .pj-dialog-title { font-family: var(--display); font-weight: 800; font-size: 40px; }
 .pj-dialog .pj-btn { width: 100%; }
+
+/* приглашение сыграть на телефонах: большой QR */
+.pj-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.pj-pair .pj-btn { width: 100%; height: 64px; font-size: 21px; padding: 0 16px; }
+.pj-invite { flex: 1; display: grid; grid-template-columns: 720px minmax(0, 1fr); gap: 80px; align-items: center; }
+.pj-qr {
+  width: 720px; height: 720px; padding: 16px; border-radius: 44px;
+  background: #FFFFFF; border: 4px solid var(--ink); box-shadow: 0 12px 0 var(--ink);
+  display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.pj-qr svg.qr { width: 100%; height: 100%; display: block; }
+.pj-invite-text { display: flex; flex-direction: column; gap: 28px; }
+.pj-invite-h { font-family: var(--display); font-weight: 800; font-size: 64px; line-height: 1.1; }
+.pj-invite-steps { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+.pj-invite-steps li { display: flex; align-items: center; gap: 20px; font-size: 32px; font-weight: 600; line-height: 1.3; }
+.pj-url { align-self: flex-start; padding: 14px 24px; border-radius: 20px; background: var(--plate); font-family: var(--display); font-weight: 700; font-size: 34px; color: var(--accent); }
